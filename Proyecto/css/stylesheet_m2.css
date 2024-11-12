@@ -88,6 +88,29 @@ header {
     transform: translateX(-50%);
 }
 
+#tit2 {
+    position: absolute;
+    height: 50px;
+    width: 90%;
+    top: 406px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#tit2 th {
+    background-color: lightgray;
+    height: 50px;
+    padding: 10px;
+    /* Borde más suave */
+    border: 1px solid #bbb;
+    border-bottom: 2px solid black;
+    /* Centrar el texto */
+    text-align: center;
+    font-weight: bold;
+    /* Color de texto */
+    color: #333;
+}
+
 #tit1 th {
     background-color: lightgray;
     height: 50px;
