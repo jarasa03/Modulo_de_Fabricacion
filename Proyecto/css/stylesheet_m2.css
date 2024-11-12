@@ -71,12 +71,12 @@ header {
 /* Estilos para las celdas de la tabla */
 
 .tabla_principal_td {
-    border: 1px solid #ddd;
     /* Bordes más suaves */
-    padding: 12px 15px;
+    border: 1px solid #ddd;
     /* Espaciado cómodo */
-    text-align: left;
+    padding: 12px 15px;
     /* Alineación a la izquierda */
+    text-align: center;
 }
 
 #tit1 {
@@ -141,26 +141,26 @@ header {
 }
 
 .th_principal:hover {
-    cursor: default;
     /* Para que el cursor no cambie en los th */
+    cursor: default;
 }
 
 
 /* Filas alternas con color de fondo */
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
     /* Color de fondo claro */
+    background-color: #f9f9f9;
 }
 
 
 /* Efecto hover para las filas de la tabla */
 
 tr:hover {
-    background-color: #f1c40f;
     /* Resaltado amarillo */
-    cursor: pointer;
+    background-color: #f1c40f;
     /* Indicar que es interactivo */
+    cursor: pointer;
 }
 
 
@@ -174,11 +174,11 @@ tr:hover {
         height: auto;
     }
     .tabla_principal {
-        font-size: 14px;
         /* Ajustar el tamaño de la fuente */
+        font-size: 14px;
     }
     .tabla_principal_td {
-        padding: 8px 10px;
         /* Reducir el padding para pantallas pequeñas */
+        padding: 8px 10px;
     }
 }
