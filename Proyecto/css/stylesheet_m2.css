@@ -168,10 +168,10 @@ tr:hover {
 
 @media screen and (max-width: 768px) {
     .tablas {
-        width: 95%;
         /* Ajustar el ancho en pantallas pequeñas */
-        height: auto;
+        width: 95%;
         /* El alto no debe ser fijo */
+        height: auto;
     }
     .tabla_principal {
         font-size: 14px;
