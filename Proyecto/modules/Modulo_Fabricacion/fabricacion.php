@@ -34,12 +34,23 @@ try {
                     <th class='th_principal'>Id de Ubicación</th>
                     <th class='th_principal'>
                         Modelo
-                        <select id="filtro1">
-                            <option selected disabled value="">Filtrar</option>
-                            <option>STAR30</option>
-                            <option>STAR24</option>
-                            <option>STAR42</option>
-                        </select>
+                        <select class="filtros">
+    <option selected disabled value="">Filtrar</option>
+    <?php
+// Consulta para obtener modelos distintos
+$modelos_query = "SELECT DISTINCT modelo FROM maquina";
+$stm = $dbh->prepare($modelos_query);
+$stm->execute();
+
+// Obtener los resultados como un array simple
+$modelos = $stm->fetchAll(PDO::FETCH_COLUMN);
+
+// Recorrer los modelos y mostrarlos en el <select>
+foreach ($modelos as $modelo) {
+    echo "<option>" . htmlspecialchars($modelo) . "</option>";
+}
+?>
+</select>
                     </th>
                 </tr>
             </thead>
@@ -76,7 +87,27 @@ try {
             <thead>
                 <tr>
                     <th class='th_principal'>Id de Ubicación</th>
-                    <th class='th_principal'>Cliente</th>
+                    <th class='th_principal'>
+                        Cliente
+                        <select class="filtros">
+    <option selected disabled value="">Filtrar</option>
+    <?php
+// Consulta para obtener modelos distintos
+$clientes_query = "SELECT DISTINCT cliente FROM ubicacion";
+$stm = $dbh->prepare($clientes_query); // Cambié $clientess_query a $clientes_query
+$stm->execute();
+
+// Obtener los resultados como un array simple
+$clientes = $stm->fetchAll(PDO::FETCH_COLUMN);
+
+// Recorrer los modelos y mostrarlos en el <select>
+foreach ($clientes as $cliente) {
+    echo "<option>" . htmlspecialchars($cliente) . "</option>";
+}
+?>
+
+</select>
+                    </th>
                     <th class='th_principal'>Dirección</th>
                 </tr>
             </thead>

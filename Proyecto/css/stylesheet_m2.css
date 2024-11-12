@@ -100,6 +100,11 @@ header {
     color: #333;
 }
 
+.filtros {
+    position: relative;
+    left: 4%;
+}
+
 /* ============================== 
    ESTILOS DE INTERACCIÓN (Hover y Alternancia)
    ============================== */
