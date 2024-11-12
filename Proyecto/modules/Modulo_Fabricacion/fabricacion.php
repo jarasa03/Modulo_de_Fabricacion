@@ -32,7 +32,15 @@ try {
                     <th class='th_principal'>Número de Serie</th>
                     <th class='th_principal'>Id de Estado</th>
                     <th class='th_principal'>Id de Ubicación</th>
-                    <th class='th_principal'>Modelo</th>
+                    <th class='th_principal'>
+                        Modelo
+                        <select id="filtro1">
+                            <option selected disabled value="">Filtrar</option>
+                            <option>STAR30</option>
+                            <option>STAR24</option>
+                            <option>STAR42</option>
+                        </select>
+                    </th>
                 </tr>
             </thead>
         </table>
