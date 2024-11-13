@@ -20,6 +20,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fabricación</title>
     <link rel="stylesheet" href="../../css/stylesheet_m2.css">
+    <script src="../../js/js_m2.js" defer></script>
 </head>
 
 <body>
@@ -96,7 +97,7 @@ try {
                     </th>
                     <th class='th_principal'>
                         Ciudad
-                        <select class="filtros">
+                        <select class="filtros" id="filtroCiudad">
                             <option selected disabled value="">Filtrar</option>
                             <?php
                             $dire_query = "SELECT DISTINCT dir FROM ubicacion";
