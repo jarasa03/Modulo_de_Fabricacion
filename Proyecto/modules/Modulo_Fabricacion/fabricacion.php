@@ -3,7 +3,7 @@ $user = "root";
 $pass = "root";
 $dbn = "maquinas_expendedoras";
 try {
-    //  Crear conexión
+    // Crear conexión
     $dbh = new PDO('mysql:host=localhost;dbname=' . $dbn, $user, $pass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     echo '<script>console.log("Conexion exitosa");</script>';
@@ -35,22 +35,17 @@ try {
                     <th class='th_principal'>
                         Modelo
                         <select class="filtros">
-    <option selected disabled value="">Filtrar</option>
-    <?php
-// Consulta para obtener modelos distintos
-$modelos_query = "SELECT DISTINCT modelo FROM maquina";
-$stm = $dbh->prepare($modelos_query);
-$stm->execute();
-
-// Obtener los resultados como un array simple
-$modelos = $stm->fetchAll(PDO::FETCH_COLUMN);
-
-// Recorrer los modelos y mostrarlos en el <select>
-foreach ($modelos as $modelo) {
-    echo "<option>" . htmlspecialchars($modelo) . "</option>";
-}
-?>
-</select>
+                            <option selected disabled value="">Filtrar</option>
+                            <?php
+                            $modelos_query = "SELECT DISTINCT modelo FROM maquina";
+                            $stm = $dbh->prepare($modelos_query);
+                            $stm->execute();
+                            $modelos = $stm->fetchAll(PDO::FETCH_COLUMN);
+                            foreach ($modelos as $modelo) {
+                                echo "<option>" . htmlspecialchars($modelo) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </th>
                 </tr>
             </thead>
@@ -58,31 +53,28 @@ foreach ($modelos as $modelo) {
     </div>
     <div class="tablas" id="maquinas_fabri">
         <?php
-$ssql1 = "SELECT idmaquina, numserie, idestado, idubicacion, modelo FROM maquina";
-$ssql2 = "SELECT idubicacion, cliente, dir FROM ubicacion";
-
-try {
-    $stm = $dbh->prepare($ssql1);
-    $stm->execute();
-    $rows = $stm->fetchAll(PDO::FETCH_ASSOC); // Obtiene todas las filas como array asociativo
-    echo "<table class='tabla_principal'>";
-    foreach ($rows as $row) {
-        echo "<tr class='tr_contenido_principal'>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idmaquina']) . "</td>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['numserie']) . "</td>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idestado']) . "</td>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['modelo']) . "</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-} catch (PDOException $e) {
-    echo '<script>console.log("Error al recoger los errores de máquinas");</script>';
-}
-?>
+        $ssql1 = "SELECT idmaquina, numserie, idestado, idubicacion, modelo FROM maquina";
+        try {
+            $stm = $dbh->prepare($ssql1);
+            $stm->execute();
+            $rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+            echo "<table class='tabla_principal'>";
+            foreach ($rows as $row) {
+                echo "<tr class='tr_contenido_principal'>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idmaquina']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['numserie']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idestado']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['modelo']) . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } catch (PDOException $e) {
+            echo '<script>console.log("Error al recoger los datos de máquinas");</script>';
+        }
+        ?>
     </div>
     <div id="tit2">
-        <!-- Cambié el <tr> fuera de la tabla a un <thead> -->
         <table class="tabla_encabezado">
             <thead>
                 <tr>
@@ -90,48 +82,64 @@ try {
                     <th class='th_principal'>
                         Cliente
                         <select class="filtros">
-    <option selected disabled value="">Filtrar</option>
-    <?php
-// Consulta para obtener modelos distintos
-$clientes_query = "SELECT DISTINCT cliente FROM ubicacion";
-$stm = $dbh->prepare($clientes_query); // Cambié $clientess_query a $clientes_query
-$stm->execute();
-
-// Obtener los resultados como un array simple
-$clientes = $stm->fetchAll(PDO::FETCH_COLUMN);
-
-// Recorrer los modelos y mostrarlos en el <select>
-foreach ($clientes as $cliente) {
-    echo "<option>" . htmlspecialchars($cliente) . "</option>";
-}
-?>
-
-</select>
+                            <option selected disabled value="">Filtrar</option>
+                            <?php
+                            $clientes_query = "SELECT DISTINCT cliente FROM ubicacion";
+                            $stm = $dbh->prepare($clientes_query);
+                            $stm->execute();
+                            $clientes = $stm->fetchAll(PDO::FETCH_COLUMN);
+                            foreach ($clientes as $cliente) {
+                                echo "<option>" . htmlspecialchars($cliente) . "</option>";
+                            }
+                            ?>
+                        </select>
                     </th>
-                    <th class='th_principal'>Dirección</th>
+                    <th class='th_principal'>
+                        Ciudad
+                        <select class="filtros">
+                            <option selected disabled value="">Filtrar</option>
+                            <?php
+                            $dire_query = "SELECT DISTINCT dir FROM ubicacion";
+                            $stm = $dbh->prepare($dire_query);
+                            $stm->execute();
+                            $dires = $stm->fetchAll(PDO::FETCH_COLUMN);
+
+                            $ciudades = [];
+                            foreach ($dires as $dire) {
+                                $partes = explode(";", $dire);
+                                $ciudad = trim(end($partes));
+                                if (!in_array($ciudad, $ciudades)) {
+                                    $ciudades[] = $ciudad;
+                                    echo "<option>" . htmlspecialchars($ciudad) . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </th>
                 </tr>
             </thead>
         </table>
     </div>
     <div class="tablas" id="ubis_fabri">
         <?php
-try {
-    $stm = $dbh->prepare($ssql2);
-    $stm->execute();
-    $rows = $stm->fetchAll(PDO::FETCH_ASSOC); // Obtiene todas las filas como array asociativo
-    echo "<table class='tabla_principal'>";
-    foreach ($rows as $row) {
-        echo "<tr class='tr_contenido_principal'>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['cliente']) . "</td>";
-        echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['dir']) . "</td>";
-        echo "</tr>";
-    }
-    echo "</table>";
-} catch (PDOException $e) {
-    echo '<script>console.log("Error al recoger los registros de ubicaciones");</script>';
-}
-?>
+        $ssql2 = "SELECT idubicacion, cliente, dir FROM ubicacion";
+        try {
+            $stm = $dbh->prepare($ssql2);
+            $stm->execute();
+            $rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+            echo "<table class='tabla_principal'>";
+            foreach ($rows as $row) {
+                echo "<tr class='tr_contenido_principal'>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['cliente']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['dir']) . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } catch (PDOException $e) {
+            echo '<script>console.log("Error al recoger los registros de ubicaciones");</script>';
+        }
+        ?>
     </div>
 </body>
 
