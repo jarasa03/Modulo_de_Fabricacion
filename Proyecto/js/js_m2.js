@@ -20,6 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Filtro para la tabla "maquinas_fabri"
+    const filtroModelo = document.querySelector("#tit1 .filtros");
+
+    filtroModelo.addEventListener("change", () => {
+        filtrarTabla("maquinas_fabri", [
+            {
+                select: filtroModelo,
+                columnaIndex: 4, // Columna del modelo
+            }
+        ]);
+    });
+
     // Selección de filtros para la tabla "ubis_fabri"
     const filtroCliente = document.querySelector("#tit2 .filtros:nth-of-type(1)");
     const filtroCiudad = document.querySelector("#filtroCiudad");
@@ -28,11 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtrosUbicaciones = [
         {
             select: filtroCliente,
-            columnaIndex: 1,
+            columnaIndex: 1, // Columna del cliente
         },
         {
             select: filtroCiudad,
-            columnaIndex: 2,
+            columnaIndex: 2, // Columna de la dirección
             extraerValor: (valor) => {
                 const partes = valor.split(";");
                 return partes[partes.length - 1].trim(); // Extraer ciudad de la dirección
@@ -40,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
-    // Agregar eventos para aplicar filtros simultáneamente
+    // Agregar eventos para aplicar filtros simultáneamente en "ubis_fabri"
     filtroCliente.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
     filtroCiudad.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
 });
