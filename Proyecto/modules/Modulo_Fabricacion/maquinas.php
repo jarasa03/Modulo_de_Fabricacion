@@ -23,7 +23,7 @@ try {
 </head>
 
 <body>
-
+    <div id="imagen_maquina"></div>
 </body>
 
 </html>

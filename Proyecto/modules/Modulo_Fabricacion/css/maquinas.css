@@ -1,0 +1,8 @@
+#imagen_maquina {
+    background-color: darkred;
+    width: 20%;
+    height: 50%;
+    position: absolute;
+    top: 2%;
+    right: 1%;
+}
