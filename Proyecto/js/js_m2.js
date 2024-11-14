@@ -24,12 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtroModelo = document.querySelector("#tit1 .filtros");
 
     filtroModelo.addEventListener("change", () => {
-        filtrarTabla("maquinas_fabri", [
-            {
-                select: filtroModelo,
-                columnaIndex: 4, // Columna del modelo
-            }
-        ]);
+        filtrarTabla("maquinas_fabri", [{
+            select: filtroModelo,
+            columnaIndex: 4, // Columna del modelo
+        }]);
     });
 
     // Selección de filtros para la tabla "ubis_fabri"
@@ -37,8 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const filtroCiudad = document.querySelector("#filtroCiudad");
 
     // Configurar los filtros
-    const filtrosUbicaciones = [
-        {
+    const filtrosUbicaciones = [{
             select: filtroCliente,
             columnaIndex: 1, // Columna del cliente
         },
@@ -55,4 +52,29 @@ document.addEventListener("DOMContentLoaded", () => {
     // Agregar eventos para aplicar filtros simultáneamente en "ubis_fabri"
     filtroCliente.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
     filtroCiudad.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
+});
+
+// Función para capturar el clic en una celda y enviar el formulario
+document.querySelectorAll(".tr_contenido_principal").forEach(tr => {
+    tr.addEventListener("click", function() {
+        // Obtener todas las celdas de la fila (todas las <td> dentro del <tr>)
+        var celdas = this.getElementsByTagName("td");
+
+        // Crear un array para almacenar los valores de las celdas
+        var valoresFila = [];
+
+        // Recorrer todas las celdas y agregar su valor al array
+        for (var i = 0; i < celdas.length; i++) {
+            valoresFila.push(celdas[i].textContent.trim());
+        }
+
+        // Convertir el array de valores a una cadena (por ejemplo, separada por comas)
+        var valoresString = valoresFila.join(",");
+
+        // Asignar el valor al campo oculto en el formulario
+        document.getElementById("valorCelda").value = valoresString;
+
+        // Enviar el formulario automáticamente
+        document.getElementById("submitForm").click();
+    });
 });

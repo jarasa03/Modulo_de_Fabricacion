@@ -2,6 +2,20 @@
 $user = "root";
 $pass = "root";
 $dbn = "maquinas_expendedoras";
+
+// Guardar el valor en la cookie si se envía el formulario
+if (isset($_POST['valor'])) {
+    // Obtener el valor de la fila seleccionada
+    $valor = $_POST['valor'];
+
+    // Guardar el valor en una cookie (por ejemplo, para 30 días)
+    setcookie("filaSeleccionada", $valor, time() + (30 * 24 * 60 * 60), "/"); // 30 días
+
+    // Redirigir para evitar el reenvío del formulario
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
 try {
     $dbh = new PDO('mysql:host=localhost;dbname=' . $dbn, $user, $pass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -74,6 +88,13 @@ try {
         }
         ?>
     </div>
+
+    <!-- Formulario oculto para enviar el valor de la celda seleccionada -->
+    <form id="formulario" action="" method="POST" style="display:none;">
+        <input type="hidden" name="valor" id="valorCelda"> <!-- El name aquí debe ser 'valor' para coincidir con el POST -->
+        <input type="submit" id="submitForm">
+    </form>
+
     <div id="tit2">
         <table class="tabla_encabezado">
             <thead>
