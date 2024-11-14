@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Función genérica para filtrar filas de una tabla considerando múltiples filtros
+    // Función para filtrar filas de una tabla considerando múltiples filtros
     function filtrarTabla(tablaId, filtros) {
         const filas = document.querySelectorAll(`#${tablaId} .tr_contenido_principal`);
 
@@ -20,30 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Filtro para la primera tabla "maquinas_fabri"
-    const filtroModelo = document.querySelector("#tit1 .filtros");
-
-    filtroModelo.addEventListener("change", () => {
-        filtrarTabla("maquinas_fabri", [
-            {
-                select: filtroModelo,
-                columnaIndex: 4, // Columna del modelo
-            }
-        ]);
-    });
-
-    // Filtros para la segunda tabla "ubis_fabri"
+    // Selección de filtros para la tabla "ubis_fabri"
     const filtroCliente = document.querySelector("#tit2 .filtros:nth-of-type(1)");
     const filtroCiudad = document.querySelector("#filtroCiudad");
 
+    // Configurar los filtros
     const filtrosUbicaciones = [
         {
             select: filtroCliente,
-            columnaIndex: 1, // Columna del cliente
+            columnaIndex: 1,
         },
         {
             select: filtroCiudad,
-            columnaIndex: 2, // Columna de la dirección
+            columnaIndex: 2,
             extraerValor: (valor) => {
                 const partes = valor.split(";");
                 return partes[partes.length - 1].trim(); // Extraer ciudad de la dirección
@@ -51,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     ];
 
+    // Agregar eventos para aplicar filtros simultáneamente
     filtroCliente.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
     filtroCiudad.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
 });
