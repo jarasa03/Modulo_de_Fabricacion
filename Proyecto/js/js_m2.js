@@ -1,36 +1,56 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Función genérica para filtrar filas de una tabla
-    function filtrarTabla(select, tablaId, columnaIndex, extraerValor = val => val) {
-        const filtro = select.value.toLowerCase();
+    // Función genérica para filtrar filas de una tabla considerando múltiples filtros
+    function filtrarTabla(tablaId, filtros) {
         const filas = document.querySelectorAll(`#${tablaId} .tr_contenido_principal`);
-        
+
         filas.forEach(fila => {
-            const celdaValor = fila.children[columnaIndex].textContent.trim();
-            const valorComparar = extraerValor(celdaValor).toLowerCase();
-            
-            if (filtro === "" || valorComparar === filtro) {
-                fila.style.display = ""; // Mostrar fila
-            } else {
-                fila.style.display = "none"; // Ocultar fila
-            }
+            let mostrarFila = true;
+
+            filtros.forEach(({ select, columnaIndex, extraerValor }) => {
+                const filtro = select.value.toLowerCase();
+                const celdaValor = fila.children[columnaIndex].textContent.trim();
+                const valorComparar = extraerValor ? extraerValor(celdaValor).toLowerCase() : celdaValor.toLowerCase();
+
+                if (filtro !== "" && valorComparar !== filtro) {
+                    mostrarFila = false; // Si no cumple el filtro, ocultar fila
+                }
+            });
+
+            fila.style.display = mostrarFila ? "" : "none"; // Mostrar u ocultar según condiciones
         });
     }
 
-    // Filtrar por modelo (tabla máquinas)
-    document.querySelector("#tit1 .filtros").addEventListener("change", function () {
-        filtrarTabla(this, "maquinas_fabri", 4);
+    // Filtro para la primera tabla "maquinas_fabri"
+    const filtroModelo = document.querySelector("#tit1 .filtros");
+
+    filtroModelo.addEventListener("change", () => {
+        filtrarTabla("maquinas_fabri", [
+            {
+                select: filtroModelo,
+                columnaIndex: 4, // Columna del modelo
+            }
+        ]);
     });
 
-    // Filtrar por cliente (tabla ubicaciones)
-    document.querySelector("#tit2 .filtros:nth-of-type(1)").addEventListener("change", function () {
-        filtrarTabla(this, "ubis_fabri", 1);
-    });
+    // Filtros para la segunda tabla "ubis_fabri"
+    const filtroCliente = document.querySelector("#tit2 .filtros:nth-of-type(1)");
+    const filtroCiudad = document.querySelector("#filtroCiudad");
 
-    // Filtrar por ciudad (tabla ubicaciones)
-    document.querySelector("#filtroCiudad").addEventListener("change", function () {
-        filtrarTabla(this, "ubis_fabri", 2, (valor) => {
-            const partes = valor.split(";");
-            return partes[partes.length - 1].trim(); // Extraer y limpiar la ciudad
-        });
-    });
+    const filtrosUbicaciones = [
+        {
+            select: filtroCliente,
+            columnaIndex: 1, // Columna del cliente
+        },
+        {
+            select: filtroCiudad,
+            columnaIndex: 2, // Columna de la dirección
+            extraerValor: (valor) => {
+                const partes = valor.split(";");
+                return partes[partes.length - 1].trim(); // Extraer ciudad de la dirección
+            }
+        }
+    ];
+
+    filtroCliente.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
+    filtroCiudad.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
 });
