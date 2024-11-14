@@ -1,8 +1,50 @@
+header {
+    background-color: blue;
+    height: 24px;
+    width: 100%;
+    top: 0;
+    position: fixed;
+    left: 0;
+    padding: 20px;
+    text-align: left;
+    z-index: 100;
+}
+
 #imagen_maquina {
     background-color: darkred;
     width: 20%;
     height: 50%;
     position: absolute;
-    top: 2%;
+    top: 11%;
     right: 1%;
+}
+
+table {
+    left: 1%;
+    width: 77%;
+    position: absolute;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    top: 11%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+table th {
+    background-color: lightgray;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #bbb;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+#encabezados {
+    height: 50px;
+}
+
+#aplicar {
+    position: absolute;
+    top: 63%;
+    right: 9%;
 }

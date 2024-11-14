@@ -21,9 +21,23 @@ try {
     <title>Máquinas</title>
     <link rel="stylesheet" href="./css/maquinas.css">
 </head>
+<header></header>
 
 <body>
     <div id="imagen_maquina"></div>
+    <table>
+        <thead>
+            <tr id="encabezados">
+                <th>Id de Máquina</th>
+                <th>Número de Serie</th>
+                <th>Id de Estado</th>
+                <th>Id de Ubicación</th>
+                <th>Modelo</th>
+            </tr>
+        </thead>
+    </table>
+
+    <input type="submit" value="Aplicar" id="aplicar">
 </body>
 
 </html>
