@@ -24,7 +24,12 @@ try {
 <header></header>
 
 <body>
-    <div id="imagen_maquina"></div>
+    <div id="imagen_maquina">
+        <?php
+
+        echo "<img src=''>"
+        ?>
+    </div>
     <table>
         <thead>
             <tr id="encabezados">
@@ -35,6 +40,13 @@ try {
                 <th>Modelo</th>
             </tr>
         </thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
     </table>
 
     <input type="submit" value="Aplicar" id="aplicar">

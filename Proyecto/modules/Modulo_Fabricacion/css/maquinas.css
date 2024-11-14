@@ -39,6 +39,14 @@ table th {
     color: #333;
 }
 
+td {
+    height: 50px;
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    white-space: nowrap;
+}
+
 #encabezados {
     height: 50px;
 }
@@ -47,4 +55,11 @@ table th {
     position: absolute;
     top: 63%;
     right: 9%;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    /* Escala la imagen para llenar el contenedor */
+    object-fit: cover;
 }
