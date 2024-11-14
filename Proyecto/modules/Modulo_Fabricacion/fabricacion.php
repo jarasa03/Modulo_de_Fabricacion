@@ -3,7 +3,6 @@ $user = "root";
 $pass = "root";
 $dbn = "maquinas_expendedoras";
 try {
-    // Crear conexión
     $dbh = new PDO('mysql:host=localhost;dbname=' . $dbn, $user, $pass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     echo '<script>console.log("Conexion exitosa");</script>';
@@ -36,7 +35,7 @@ try {
                     <th class='th_principal'>
                         Modelo
                         <select class="filtros">
-                            <option selected disabled value="">Filtrar</option>
+                            <option value="">Todos</option>
                             <?php
                             $modelos_query = "SELECT DISTINCT modelo FROM maquina";
                             $stm = $dbh->prepare($modelos_query);
@@ -83,7 +82,7 @@ try {
                     <th class='th_principal'>
                         Cliente
                         <select class="filtros">
-                            <option selected disabled value="">Filtrar</option>
+                            <option value="">Todos</option>
                             <?php
                             $clientes_query = "SELECT DISTINCT cliente FROM ubicacion";
                             $stm = $dbh->prepare($clientes_query);
@@ -98,7 +97,7 @@ try {
                     <th class='th_principal'>
                         Ciudad
                         <select class="filtros" id="filtroCiudad">
-                            <option selected disabled value="">Filtrar</option>
+                            <option value="">Todos</option>
                             <?php
                             $dire_query = "SELECT DISTINCT dir FROM ubicacion";
                             $stm = $dbh->prepare($dire_query);
