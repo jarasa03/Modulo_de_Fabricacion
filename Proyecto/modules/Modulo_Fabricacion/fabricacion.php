@@ -12,7 +12,7 @@ try {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -35,6 +35,7 @@ try {
                     <th class='th_principal'>
                         Modelo
                         <select class="filtros">
+                            <option disabled selected>Filtrar</option>
                             <option value="">Todos</option>
                             <?php
                             $modelos_query = "SELECT DISTINCT modelo FROM maquina";
@@ -82,6 +83,7 @@ try {
                     <th class='th_principal'>
                         Cliente
                         <select class="filtros">
+                            <option disabled selected>Filtrar</option>
                             <option value="">Todos</option>
                             <?php
                             $clientes_query = "SELECT DISTINCT cliente FROM ubicacion";
@@ -97,6 +99,7 @@ try {
                     <th class='th_principal'>
                         Ciudad
                         <select class="filtros" id="filtroCiudad">
+                            <option disabled selected>Filtrar</option>
                             <option value="">Todos</option>
                             <?php
                             $dire_query = "SELECT DISTINCT dir FROM ubicacion";
