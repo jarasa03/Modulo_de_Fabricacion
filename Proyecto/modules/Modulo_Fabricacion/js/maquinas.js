@@ -14,4 +14,5 @@ document.getElementById("formulario_maquina").addEventListener("submit", () => {
             // Tal vez actualizar la interfaz o mostrar un mensaje al usuario
         })
         .catch(error => console.error('Error:', error));
+
 });
