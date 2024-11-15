@@ -3,7 +3,7 @@ session_start();
 require_once "../../lib/basededatos.php";
 require_once "../../lib/funciones.php";
 $dbh = conectar();
-echo crearMenu($dbh); 
+echo crearMenu($dbh);
 
 // Guardar el valor en la cookie si se envía el formulario
 if (isset($_POST['valor'])) {

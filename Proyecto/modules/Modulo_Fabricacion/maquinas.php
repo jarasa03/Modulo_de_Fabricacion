@@ -96,16 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="id_maquina" value="<?php echo $valoresArray[0]; ?>"> <!-- ID oculto -->
                 </td>
                 <td>
-                    <input type="text" name="numero_serie" value="<?php echo $valoresArray[1]; ?>">
+                    <input id="num_serie" type="text" name="numero_serie" value="<?php echo $valoresArray[1]; ?>">
                 </td>
                 <td>
-                    <input type="text" name="id_estado" value="<?php echo $valoresArray[2]; ?>">
+                    <input id="id_estado" type="text" name="id_estado" value="<?php echo $valoresArray[2]; ?>">
                 </td>
                 <td>
-                    <input type="text" name="id_ubicacion" value="<?php echo $valoresArray[3]; ?>">
+                    <input id="id_ubi" type="text" name="id_ubicacion" value="<?php echo $valoresArray[3]; ?>">
                 </td>
                 <td>
-                    <input type="text" name="modelo" value="<?php echo $valoresArray[4]; ?>">
+                    <input id="modelo" type="text" name="modelo" value="<?php echo $valoresArray[4]; ?>">
                 </td>
             </tr>
         </table>

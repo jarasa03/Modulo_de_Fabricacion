@@ -3,6 +3,11 @@ document.getElementById("formulario_maquina").addEventListener("submit", () => {
     // Recoger los datos del formulario
     let formData = new FormData(this); // 'this' hace referencia al formulario
 
+    let num_serie = document.getElementById("num_serie").value;
+    let id_estado = document.getElementById("id_estado").value;
+    let id_ubi = document.getElementById("id_ubi").value;
+    let modelo = document.getElementById("modelo").value;
+
     // Enviar los datos al archivo PHP usando fetch
     fetch('../maquinas.php', {
             method: 'POST',
@@ -15,4 +20,8 @@ document.getElementById("formulario_maquina").addEventListener("submit", () => {
         })
         .catch(error => console.error('Error:', error));
 
+    document.getElementById("num_serie").value = num_serie;
+    document.getElementById("id_estado").value = id_estado;
+    document.getElementById("id_ubi").value = id_ubi;
+    document.getElementById("modelo").value = modelo;
 });
