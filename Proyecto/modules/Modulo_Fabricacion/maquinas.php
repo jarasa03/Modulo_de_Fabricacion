@@ -63,24 +63,25 @@ if (isset($_COOKIE['filaSeleccionada'])) {
                 ?>
             </td>
             <td>
-                <?php
-                echo $valoresArray[1];
-                ?>
+                <input type="text" value="<?php
+                                            echo $valoresArray[1];
+                                            ?>">
+
             </td>
             <td>
-            <?php
-                echo $valoresArray[2];
-                ?>
+            <input type="text" value="<?php
+                                            echo $valoresArray[2];
+                                            ?>">
             </td>
             <td>
-            <?php
-                echo $valoresArray[3];
-                ?>
+            <input type="text" value="<?php
+                                            echo $valoresArray[3];
+                                            ?>">
             </td>
             <td>
-            <?php
-                echo $valoresArray[4];
-                ?>
+            <input type="text" value="<?php
+                                            echo $valoresArray[4];
+                                            ?>">
             </td>
         </tr>
     </table>
