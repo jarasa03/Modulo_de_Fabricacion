@@ -1,7 +1,9 @@
 <?php
-$user = "root";
-$pass = "root";
-$dbn = "maquinas_expendedoras";
+session_start();
+require_once "../../lib/basededatos.php";
+require_once "../../lib/funciones.php";
+$dbh = conectar();
+echo crearMenu($dbh); 
 
 // Guardar el valor en la cookie si se envía el formulario
 if (isset($_POST['valor'])) {
@@ -14,15 +16,6 @@ if (isset($_POST['valor'])) {
     // Redirigir para evitar el reenvío del formulario
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
-}
-
-try {
-    $dbh = new PDO('mysql:host=localhost;dbname=' . $dbn, $user, $pass);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo '<script>console.log("Conexion exitosa");</script>';
-} catch (Exception $e) {
-    echo '<script>console.log("Error en la conexión con la base de datos");</script>';
-    echo $e->getMessage();
 }
 ?>
 <!DOCTYPE html>

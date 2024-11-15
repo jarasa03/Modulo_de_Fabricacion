@@ -1,4 +1,4 @@
-header {
+/* header {
     background-color: blue;
     height: 24px;
     width: 100%;
@@ -8,7 +8,7 @@ header {
     padding: 20px;
     text-align: left;
     z-index: 100;
-}
+} */
 
 #imagen_maquina {
     background-color: darkred;
@@ -62,4 +62,8 @@ img {
     height: 100%;
     /* Escala la imagen para llenar el contenedor */
     object-fit: cover;
+}
+
+input {
+    text-align: center;
 }

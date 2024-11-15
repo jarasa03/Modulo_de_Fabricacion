@@ -2,7 +2,7 @@
 /* ============================== 
    ESTRUCTURA (Contenedores, Layout)
    ============================== */
-header {
+/* header {
     background-color: blue;
     height: 24px;
     width: 100%;
@@ -12,7 +12,7 @@ header {
     padding: 20px;
     text-align: left;
     z-index: 100;
-}
+} */
 
 /* ============================== 
    TABLAS Y Celdas Generales
