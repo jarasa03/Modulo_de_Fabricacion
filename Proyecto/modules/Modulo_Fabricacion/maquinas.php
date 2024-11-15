@@ -3,7 +3,6 @@ session_start();
 require_once "../../lib/basededatos.php";
 require_once "../../lib/funciones.php";
 $dbh = conectar();
-echo crearMenu($dbh);
 ?>
 
 <?php
@@ -74,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="./css/maquinas.css">
     <script src="./js/maquinas.js" defer></script>
 </head>
-<header></header>
+<header><button onclick="window.location.href='../../login.php  '">Cerrar sesion</button></header>
 
 <body>
     <div id="imagen_maquina">

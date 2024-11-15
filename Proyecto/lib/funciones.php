@@ -139,7 +139,7 @@ function crearMenu(PDO $conexion): string
     foreach ($rows as $row) {
         // Obtiene el nombre y el enlace del botón de la fila actual
         $nombre = $row['boton'];
-        $enlace = "./../../modules/m0/" . $row['enlace'];
+        $enlace = "./../../modules/Modulo_Fabricacion/" . $row['enlace'];
 
         // Añade un botón HTML con la acción de redirigir al enlace especificado
         $result .= "<button onclick='window.location.href=\"$enlace\"'>$nombre</button>";
