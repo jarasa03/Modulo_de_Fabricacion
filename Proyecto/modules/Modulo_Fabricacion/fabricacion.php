@@ -9,7 +9,7 @@ if (isset($_POST['valor'])) {
     $valor = $_POST['valor'];
 
     // Guardar el valor en una cookie (por ejemplo, para 30 días)
-    setcookie("filaSeleccionada", $valor, time() + (30 * 24 * 60 * 60), "/"); // 30 días
+    setcookie("filaSeleccionada", $valor, time() + (30 * 24 * 60 * 60), "maquinas.php"); // 30 días
 
     // Redirigir para evitar el reenvío del formulario
     header("Location: " . $_SERVER['PHP_SELF']);

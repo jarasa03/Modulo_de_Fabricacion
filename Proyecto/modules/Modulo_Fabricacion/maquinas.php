@@ -15,18 +15,13 @@ try {
 // Verifica si la cookie 'filaSeleccionada' está establecida
 if (isset($_COOKIE['filaSeleccionada'])) {
     // Recuperar la cookie
-    $valor = $_COOKIE['filaSeleccionada'];
+    $valor = htmlspecialchars($_COOKIE['filaSeleccionada']);
 
     // Mostrar el valor de la cookie (en este caso, la cadena de valores)
     echo "Valores de la fila seleccionada: " . $valor;
 
     // Si quieres dividir la cadena en un array de valores individuales
     $valoresArray = explode(',', $valor); // Divide la cadena por las comas
-
-    // Ahora puedes usar $valoresArray como un array normal
-    echo "<pre>";
-    print_r($valoresArray);
-    echo "</pre>";
 } else {
     echo "<script>console.log('No se ha seleccionado ningún campo');</script>";
 }
@@ -47,7 +42,7 @@ if (isset($_COOKIE['filaSeleccionada'])) {
 <body>
     <div id="imagen_maquina">
         <?php
-        
+
         echo "<img src=''>"
         ?>
     </div>
@@ -62,11 +57,31 @@ if (isset($_COOKIE['filaSeleccionada'])) {
             </tr>
         </thead>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+                <?php
+                echo $valoresArray[0];
+                ?>
+            </td>
+            <td>
+                <?php
+                echo $valoresArray[1];
+                ?>
+            </td>
+            <td>
+            <?php
+                echo $valoresArray[2];
+                ?>
+            </td>
+            <td>
+            <?php
+                echo $valoresArray[3];
+                ?>
+            </td>
+            <td>
+            <?php
+                echo $valoresArray[4];
+                ?>
+            </td>
         </tr>
     </table>
 
