@@ -52,29 +52,41 @@ document.addEventListener("DOMContentLoaded", () => {
     // Agregar eventos para aplicar filtros simultáneamente en "ubis_fabri"
     filtroCliente.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
     filtroCiudad.addEventListener("change", () => filtrarTabla("ubis_fabri", filtrosUbicaciones));
-});
 
-// Función para capturar el clic en una celda y enviar el formulario
-document.querySelectorAll(".tr_contenido_principal").forEach(tr => {
-    tr.addEventListener("click", function() {
-        // Obtener todas las celdas de la fila (todas las <td> dentro del <tr>)
-        var celdas = this.getElementsByTagName("td");
+    // Función para marcar una fila como seleccionada
+    function seleccionarFila(tr) {
+        document.querySelectorAll('.tr_contenido_principal').forEach(row => {
+            row.classList.remove('seleccionada');
+        });
+        tr.classList.add('seleccionada');
+    }
 
-        // Crear un array para almacenar los valores de las celdas
-        var valoresFila = [];
+    // Función para guardar la selección en una cookie
+    function guardarSeleccion(valores) {
+        document.cookie = `filaSeleccionada=${valores}; path=/; max-age=${30*24*60*60}`;
+    }
 
-        // Recorrer todas las celdas y agregar su valor al array
-        for (var i = 0; i < celdas.length; i++) {
-            valoresFila.push(celdas[i].textContent.trim());
-        }
-
-        // Convertir el array de valores a una cadena (por ejemplo, separada por comas)
-        var valoresString = valoresFila.join(",");
-
-        // Asignar el valor al campo oculto en el formulario
-        document.getElementById("valorCelda").value = valoresString;
-
-        // Enviar el formulario automáticamente
-        document.getElementById("submitForm").click();
+    // Manejar clics en las filas
+    document.querySelectorAll(".tr_contenido_principal").forEach(tr => {
+        tr.addEventListener("click", function() {
+            var valoresFila = Array.from(this.getElementsByTagName("td"))
+                                   .map(td => td.textContent.trim());
+            var valoresString = valoresFila.join(",");
+            
+            seleccionarFila(this);
+            guardarSeleccion(valoresString);
+        });
     });
+
+    // Marcar la fila seleccionada al cargar la página
+    const filaSeleccionada = document.cookie.split('; ').find(row => row.startsWith('filaSeleccionada='))?.split('=')[1];
+    if (filaSeleccionada) {
+        const valores = filaSeleccionada.split(',');
+        document.querySelectorAll('.tr_contenido_principal').forEach(tr => {
+            const celdas = tr.getElementsByTagName('td');
+            if (Array.from(celdas).every((td, index) => td.textContent.trim() === valores[index])) {
+                seleccionarFila(tr);
+            }
+        });
+    }
 });

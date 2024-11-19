@@ -5,18 +5,9 @@ require_once "../../lib/funciones.php";
 $dbh = conectar();
 echo crearMenu($dbh);
 
-// Guardar el valor en la cookie si se envía el formulario
-if (isset($_POST['valor'])) {
-    // Obtener el valor de la fila seleccionada
-    $valor = $_POST['valor'];
+// Obtener el valor de la cookie si existe
+$selected_row = isset($_COOKIE['filaSeleccionada']) ? $_COOKIE['filaSeleccionada'] : '';
 
-    // Guardar el valor en una cookie (por ejemplo, para 30 días)
-    setcookie("filaSeleccionada", $valor, time() + (30 * 24 * 60 * 60), "maquinas.php"); // 30 días
-
-    // Redirigir para evitar el reenvío del formulario
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -81,12 +72,6 @@ if (isset($_POST['valor'])) {
         }
         ?>
     </div>
-
-    <!-- Formulario oculto para enviar el valor de la celda seleccionada -->
-    <form id="formulario" action="" method="POST" style="display:none;">
-        <input type="hidden" name="valor" id="valorCelda"> <!-- El name aquí debe ser 'valor' para coincidir con el POST -->
-        <input type="submit" id="submitForm">
-    </form>
 
     <div id="tit2">
         <table class="tabla_encabezado">

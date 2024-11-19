@@ -109,6 +109,15 @@ tr:hover {
     cursor: default;
 }
 
+/* Estilo para la fila seleccionada */
+.tr_contenido_principal.seleccionada {
+    background-color: #e6f3ff !important; /* Azul claro */
+}
+
+.tr_contenido_principal.seleccionada:hover {
+    background-color: #c2e0ff !important; /* Un azul un poco más oscuro para el hover */
+}
+
 /* ============================== 
    MEDIAS QUERIES (Responsividad)
    ============================== */
@@ -127,4 +136,3 @@ tr:hover {
         padding: 8px 10px;
     }
 }
-
