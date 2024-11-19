@@ -1,14 +1,12 @@
 <?php
-// Configuración de la base de datos
-$user = "root";
-$pass = "root";
-$dbn = "maquinas_expendedoras";
+session_start();
+require_once "../../clases/basededatos.php";
+require_once "../../clases/funciones.php";
+$dbh = conectar();
+?>
 
+<?php
 try {
-    $dbh = new PDO('mysql:host=localhost;dbname=' . $dbn, $user, $pass);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo '<script>console.log("Conexión exitosa");</script>';
-
     // Consultar máquinas con idubicacion = 1
     $sql = "
         SELECT m.numserie, u.dir 
@@ -76,24 +74,11 @@ try {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Actualizar Ubicación y Cliente</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <title>Actualizar Ubicacion y Cliente</title>
+    <link rel="stylesheet" href="./css/maquinas.css">
 </head>
 <body>
-    <h1>Actualizar Ubicación y Cliente de Máquinas</h1>
+    <h1>Mostrando maquinas en el taller que faltan por asignar </h1>
 
     <?php if ($maquinas): ?>
         <table>
