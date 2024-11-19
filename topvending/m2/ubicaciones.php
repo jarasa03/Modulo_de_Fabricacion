@@ -1,7 +1,8 @@
 <?php
 session_start();
-require_once "../../clases/basededatos.php";
-require_once "../../clases/funciones.php";
+define("DOCROOT",$_SERVER['DOCUMENT_ROOT']."/topvending");
+require_once DOCROOT . "/clases/basededatos.php";
+require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 ?>
 
@@ -75,7 +76,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Actualizar Ubicacion y Cliente</title>
-    <link rel="stylesheet" href="./css/maquinas.css">
+    <link rel="stylesheet" href="topvending/m2/css/maquinas.css">
 </head>
 <body>
     <h1>Mostrando maquinas en el taller que faltan por asignar </h1>
