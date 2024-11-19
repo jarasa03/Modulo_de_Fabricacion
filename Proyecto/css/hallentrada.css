@@ -1,0 +1,29 @@
+.bodyy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.top {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #f3f3f3; /* Color de fondo */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra  */
+}
+
+.center {
+    color:blue;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nombre1{
+    position: absolute;
+    right: 5rem;
+    top: 0;
+}

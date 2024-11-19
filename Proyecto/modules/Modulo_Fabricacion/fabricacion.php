@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../../lib/basededatos.php";
-require_once "../../lib/funciones.php";
+require_once "../../clases/basededatos.php";
+require_once "../../clases/funciones.php";
 $dbh = conectar();
 echo crearMenu($dbh);
 
@@ -17,6 +17,7 @@ $selected_row = isset($_COOKIE['filaSeleccionada']) ? $_COOKIE['filaSeleccionada
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fabricación</title>
     <link rel="stylesheet" href="../../css/stylesheet_m2.css">
+    <link rel="stylesheet" href="../../css/hallentrada.css">
     <script src="../../js/js_m2.js" defer></script>
 </head>
 

@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once "../../lib/basededatos.php";
-require_once "../../lib/funciones.php";
+require_once "../../clases/basededatos.php";
+require_once "../../clases/funciones.php";
 $dbh = conectar();
 ?>
 

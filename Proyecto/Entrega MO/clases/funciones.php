@@ -63,35 +63,42 @@ function login(): bool
     return $result;
 }
 
-
-/* FUNCION PARA VALIDAR LOGIN */
 function validar(PDO $conexion, string $user, string $pwd): bool
 {
-    // Inicializa $result en true para indicar éxito por defecto (se cambiará si falla)
     $result = true;
-    $ssql = "SELECT user, pass, rol FROM usuarios WHERE user = :userr AND pass = :passs";
+    $ssql = "SELECT idempleado,user,pass,rol FROM usuarios WHERE user = :userr"; //he quitado el 'and pass' pq hay que usar password verify con la contraseña guardada con el metodo password_hash
     $stmt = $conexion->prepare($ssql);
-    $stmt->bindParam(':userr', $user);
-    $stmt->bindParam(':passs', $pwd);
+    $stmt->bindParam(':userr', $user); //quito el bindParam de password pq ya no es necesario
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
+   
+
+    
     if ($row === false) {
-        // Si no hay coincidencia, muestra un mensaje de error y cambia $result a false
+        RegistrarLog(date("r"),"x","error"," No existe en base de datos");
         echo "Usuario o contraseña incorrecto";
         $result = false;
     } else {
-        // Si el usuario es válido, guarda los datos en la sesión
-        $_SESSION['usuario'] = $row['user'];
-        $_SESSION['rol'] = $row['rol'];
-        $_SESSION['pass'] = $row['pass'];
-        header("Location:./modules/Modulo_Fabricacion/fabricacion.php");
-        $result = true;
-        exit;
+            if(estadoEmpleado($conexion,$row["idempleado"])){
+            /* SE GUARDA LAS SESSIONS */
+            $_SESSION['usuario'] = $row['user'];
+            $_SESSION['rol'] = $row['rol']; //he quitado la linea que guardaba la password pq por lo visto da problemas de seguridad
+            header("Location:prueba.php");
+            $result = true;
+            exit;
+        } else {
+            RegistrarLog(date("r"),$row["idempleado"],"error"," usuario o contraseña incorrecto");
+            echo "Usuario o contraseña incorrecto";
+            $result = false;
+        }
     }
-    Database::CloseConn();
-    // Retorna el resultado (true si se autenticó correctamente, false si no)
+
+    /* CERRAMOS LA BASE DE DATOS*/
+    database::CloseConn();
     return $result;
 }
+
+
 
 /* Funcion para cerrar la sesion */
 function cerrarSesion()
@@ -123,7 +130,9 @@ function redirect()
 
 function crearMenu(PDO $conexion): string
 {
-    $conexion = Database::getInstance();
+    $user = $_SESSION['usuario'];   
+    
+
     $result = "";
     $rol = $_SESSION["rol"];
     $ssql = "SELECT boton, enlace FROM menu WHERE rol = :rol";
@@ -131,25 +140,61 @@ function crearMenu(PDO $conexion): string
     $stmt->bindParam(":rol", $rol);
     $stmt->execute();
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
     // Inicia la estructura del menú en $result con la etiqueta <header>
-    $result .= "<header>";
+    $result .= "<header class='top'>";
 
     // Recorre cada fila de resultados para agregar botones al menú
     foreach ($rows as $row) {
         // Obtiene el nombre y el enlace del botón de la fila actual
         $nombre = $row['boton'];
-        $enlace = "./../../modules/Modulo_Fabricacion/" . $row['enlace'];
+        $enlace = $row['enlace'];
 
         // Añade un botón HTML con la acción de redirigir al enlace especificado
         $result .= "<button onclick='window.location.href=\"$enlace\"'>$nombre</button>";
     }
     // Agrega un botón para cerrar sesión, que redirige a la página de login
-    $result .= "<button onclick=\"window.location.href='../../login.php';\">Cerrar Sesión</button>";
-    $result .= "</header>";
+    $result .= "<button onclick=\"window.location.href='login.php';\">Cerrar Sesión</button>";
+    $result .= "<p class='nombre1'>"."Usuario: ".$user. "</p>" ."</header>";
     Database::CloseConn();
     return $result;
 }
+
+/* Función para comprobar estado del empleado */
+function estadoEmpleado(PDO $conexion, $id): bool
+{
+    $ssql = "SELECT estadolaboral FROM empleado WHERE idempleado=:id"; //query para sacar de la bd el estado
+    $stmt = $conexion->prepare($ssql);
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT); //pdo param_int para asegurarnos que el valor se pasa correctamente
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return isset($row['estadolaboral']) && $row['estadolaboral'] === 'activo'; // devuelve true o false dependiendo si existe y es igual a activo
+}
+
+
+
+/*Funcion de prueba que he tenido que hacer para encriptar la password de la base de datos, en teoria las password deben estar encriptadas de base asi que no haria falta
+ en el trabajo final*/
+ function saludoini(PDO $conexion): string
+{
+    $user = $_SESSION['usuario'];
+
+
+    $ssql = "SELECT user,rol FROM usuarios WHERE user = :userr ";
+    $stmt = $conexion->prepare($ssql);
+    $stmt->bindParam(':userr', $user);
+
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $usuario = $row['user'];
+    $dpto = $row['rol'];
+    $saludo = "<p class='center'>Bienvenido " . $usuario . "  al apartado web de " . $dpto . "</p>";
+    return $saludo;
+}
+
+
+
 
 
 ?>
