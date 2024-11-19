@@ -1,0 +1,138 @@
+/* ============================== 
+   TABLAS Y Celdas Generales
+   ============================== */
+
+/* Contenedor principal para las tablas */
+.tablas {
+    background-color: lightgoldenrodyellow;
+    height: 33%;
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    scrollbar-width: none;
+}
+
+.tablas::-webkit-scrollbar {
+    display: none;
+}
+
+/* Encabezado de las tablas */
+.tabla_encabezado {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+/* Estilo general de las tablas */
+.tabla_principal {
+    width: 100%;
+    border-spacing: 0;
+    background-color: white;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+/* Estilos para las celdas de la tabla */
+.tabla_principal_td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* ============================== 
+   ESTILOS ESPECÍFICOS (Elementos con ID o Clases específicas)
+   ============================== */
+
+/* Estilos para las tablas específicas de máquinas en fabricación */
+#maquinas_fabri {
+    top: 20%; /* Cambié de píxeles a porcentaje */
+}
+
+/* Estilos para las tablas específicas de ubicaciones en fabricación */
+#ubis_fabri {
+    top: 64%; /* Cambié de píxeles a porcentaje */
+}
+
+/* Títulos de las tablas */
+#tit1, #tit2 {
+    position: absolute;
+    height: 50px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#tit1 {
+    top: 13%; /* Cambié de píxeles a porcentaje */
+}
+
+#tit2 {
+    top: 57%; /* Cambié de píxeles a porcentaje */
+}
+
+#tit2 th, #tit1 th, .th_principal {
+    background-color: lightgray;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #bbb;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+.filtros {
+    position: relative;
+    left: 4%;
+}
+
+/* ============================== 
+   ESTILOS DE INTERACCIÓN (Hover y Alternancia)
+   ============================== */
+
+/* Filas alternas con color de fondo */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Efecto hover para las filas de la tabla */
+tr:hover {
+    background-color: #f1c40f;
+    cursor: pointer;
+}
+
+/* Estilos para las celdas de la tabla con efecto hover */
+.th_principal:hover {
+    cursor: default;
+}
+
+/* Estilo para la fila seleccionada */
+.tr_contenido_principal.seleccionada {
+    background-color: #e6f3ff !important; /* Azul claro */
+}
+
+.tr_contenido_principal.seleccionada:hover {
+    background-color: #c2e0ff !important; /* Un azul un poco más oscuro para el hover */
+}
+
+/* ============================== 
+   MEDIAS QUERIES (Responsividad)
+   ============================== */
+   @media screen and (max-width: 768px) {
+    .tablas {
+        width: 95%;
+        height: auto;
+    }
+    #tit1, #tit2 {
+        width: 95%; /* Asegura que los títulos también tengan el mismo ancho que las tablas */
+    }
+    .tabla_principal {
+        font-size: 14px;
+    }
+    .tabla_principal_td {
+        padding: 8px 10px;
+    }
+}
