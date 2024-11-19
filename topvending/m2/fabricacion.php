@@ -17,8 +17,8 @@ $selected_row = isset($_COOKIE['filaSeleccionada']) ? $_COOKIE['filaSeleccionada
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fabricación</title>
-    <link rel="stylesheet" href=<?php echo "/topvending/css/stylesheet_m2.css"?>> <!--href="../../css/stylesheet_m2.css"> -->
-    <link rel="stylesheet" href=<?php echo "/topvending/css/hallentrada.css"?>>
+    <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
+    <link rel="stylesheet" href="/topvending/css/hallentrada.css">
     <script src=<?php echo DOCROOT . "/js/js_m2.js"?> defer></script>
 </head>
 

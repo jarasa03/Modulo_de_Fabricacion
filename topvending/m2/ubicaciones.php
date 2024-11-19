@@ -78,6 +78,7 @@ try {
     <meta charset="UTF-8">
     <title>Actualizar Ubicacion y Cliente</title>
     <link rel="stylesheet" href="./css/maquinas.css">
+    <link rel="stylesheet" href="/topvending/css/hallentrada.css">
 </head>
 <body>
     <h1>Mostrando maquinas en el taller que faltan por asignar </h1>
