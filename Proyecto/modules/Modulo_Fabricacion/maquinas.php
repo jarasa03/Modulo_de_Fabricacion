@@ -60,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
+    header("Location: ./fabricacion.php");
+    exit;
 }
 ?>
 
