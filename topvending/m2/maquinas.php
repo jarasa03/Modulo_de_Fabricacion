@@ -1,7 +1,8 @@
 <?php
 session_start();
-require_once "../../clases/basededatos.php";
-require_once "../../clases/funciones.php";
+define("DOCROOT",$_SERVER['DOCUMENT_ROOT']."/topvending");
+require_once DOCROOT . "/clases/basededatos.php";
+require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 ?>
 
