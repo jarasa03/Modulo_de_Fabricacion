@@ -141,7 +141,7 @@ tr:nth-child(even) {
 /* Efecto hover para las filas de la tabla */
 
 tr:hover {
-    background-color: #f1c40f;
+    background-color: #f1d359;
 }
 
 
