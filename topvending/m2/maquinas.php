@@ -81,7 +81,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
     <div id="imagen_maquina">
-        <?php echo "<img src=''>"; ?>
+        <?php
+        try {
+            // Crear la consulta SQL para actualizar los valores
+            $sqlx = "SELECT foto FROM maquina
+            WHERE idmaquina = :idmaquina";
+
+            // Preparar la consulta
+            $stmt = $dbh->prepare($sqlx);
+
+            // Enlazar los parámetros
+            $stmt->bindParam(':idmaquina', $id_maquina);
+
+            // Ejecutar la consulta
+            $stmt->execute();
+
+            // Guardo en la variable foto lo que devuelve la consulta
+            $foto = $stmt->fetchColumn();
+
+            echo "<img src='" . $foto . "'>";
+            echo "<script>console.log('Se muestra la imagen correctamente');</script>";
+        } catch (Exception $e) {
+            echo "<script>console.log('Error al mostrarse la imagen');</script>";
+        }
+        ?>
     </div>
     <form id="formulario_maquina" method="POST">
         <table>
@@ -98,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td>
                     <!-- Campo oculto para el ID de la máquina -->
                     <input type="hidden" name="id_maquina" value="<?php echo $id_maquina; ?>">
-                    <?php echo $id_maquina; ?>  <!-- Muestra el ID de la máquina en la celda -->
+                    <?php echo $id_maquina; ?> <!-- Muestra el ID de la máquina en la celda -->
                 </td>
                 <td>
                     <!-- Campo para el número de serie -->
