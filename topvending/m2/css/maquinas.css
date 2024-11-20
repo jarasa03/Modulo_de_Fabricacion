@@ -55,3 +55,9 @@ img {
 input {
     text-align: center;
 }
+
+#botonBorrar{
+    position: absolute;
+    top: 63%;
+    right: 0%;
+}
