@@ -98,8 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Guardo en la variable foto lo que devuelve la consulta
             $foto = $stmt->fetchColumn();
-
-            echo "<img src='" . $foto . "'>";
+            
+            if ($foto === "null") {
+                echo "<img src='../resources/default.jpg'>";
+            } else {
+                echo "<img src='" . $foto . "'>";
+            }
             echo "<script>console.log('Se muestra la imagen correctamente');</script>";
         } catch (Exception $e) {
             echo "<script>console.log('Error al mostrarse la imagen');</script>";
