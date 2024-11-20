@@ -21,7 +21,7 @@ try {
         $modelo = htmlspecialchars($_POST['modelo']);
 
         // Foto por defecto
-        $foto = 'default.jpg';
+        $foto = "null";
 
         // Procesar la foto si se ha subido
         if (!empty($_FILES['foto']['name'])) {
@@ -119,10 +119,15 @@ try {
                     <td id="maquina"><input id="stockmax" type="number" name="stockmax" value="<?php echo htmlspecialchars($stockmax ?? ''); ?>" placeholder="Campo obligatorio" required></td>
                     <td id="maquina">
                         <select id="modelo" name="modelo" required>
-                            <option value="">Todos</option>
                             <?php
-                            $modelos_query = "SELECT DISTINCT modelo FROM maquina";
+                            $modelos_query = "SELECT DISTINCT modelo FROM maquina ORDER BY CAST(SUBSTRING(modelo, 5) AS UNSIGNED)";
                             $stmt = $dbh->prepare($modelos_query);
+                            $stmt->execute();
+                            $modelos = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                            foreach ($modelos as $modelo_option) {
+                                $selected = ($modelo == $modelo_option) ? 'selected' : '';
+                                echo "<option value='". htmlspecialchars($modelo_option) . "' $selected>" . htmlspecialchars($modelo_option) . "</option>";
+                            }
                             ?>
                         </select>
                     </td>
