@@ -113,6 +113,7 @@ if (isset($_POST['seleccionar_fila'])) {
                                 ?>
                             </select>
                         </th>
+                        <th class='th_principal'>Modificar</th>
                     </tr>
                 </thead>
             </table>
@@ -129,7 +130,7 @@ if (isset($_POST['seleccionar_fila'])) {
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['modelo']) . "</td>";
                     // Formulario para enviar la fila seleccionada
-                    echo "<td>
+                    echo "<td class='tabla_principal_td'>
                             <form method='POST'>
                                 <input type='hidden' name='id_maquina' value='" . htmlspecialchars($row['idmaquina']) . "'>
                                 <input type='hidden' name='numero_serie' value='" . htmlspecialchars($row['numserie']) . "'>

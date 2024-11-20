@@ -41,6 +41,7 @@
     padding: 12px 15px;
     text-align: center;
     white-space: nowrap;
+    font-size: large;
 }
 
 /* ============================== 
@@ -82,12 +83,23 @@
     text-align: center;
     font-weight: bold;
     color: #333;
+    font-size: large;
 }
 
 .filtros {
     position: relative;
     left: 4%;
 }
+
+/* Estilos para las celdas que contienen botones */
+.tabla_principal_td button {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente */
+    margin: 0 auto;          /* Asegura que el botón se mantenga centrado en la celda */
+    margin-top: 15px;
+}
+
 
 /* ============================== 
    ESTILOS DE INTERACCIÓN (Hover y Alternancia)
