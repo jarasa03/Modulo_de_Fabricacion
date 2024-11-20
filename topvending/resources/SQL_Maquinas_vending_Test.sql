@@ -260,9 +260,9 @@ INSERT INTO menu (rol,modulo,orden,boton) values ('RRHH','M1',4,'Opcion 4');
 -- Opciones de menu
 
 INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',1,'Inicio','/m2/fabricacion.php');
-INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',2,'Modificar','/m2/maquinas.php');
-INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',3,'Ubicaciones','/m2/ubicaciones.php');
-INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',4,'Opcion 4','/m2/test1.php');
+INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',2,'Añadir Máquina','/m2/anyadir_maquina.php');
+INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',3,'Añadir Ubicación','/m2/anyadir_ubicacion.php');
+INSERT INTO menu (rol,modulo,orden,boton,enlace) values ('FABRICACION','M2',4,'Ubicaciones','/m2/ubicaciones.php');
 
 INSERT INTO menu (rol,modulo,orden,boton) values ('SUMINISTROS','M3',1,'Opcion 1');
 INSERT INTO menu (rol,modulo,orden,boton) values ('SUMINISTROS','M3',2,'Opcion 2');

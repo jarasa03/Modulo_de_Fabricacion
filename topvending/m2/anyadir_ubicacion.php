@@ -5,8 +5,8 @@ require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 
-// Sanitizar y almacenar el menú generado dinámicamente
-$menu_sanitizado = htmlspecialchars(crearMenu($dbh));
+// Sanitización del menú generado dinámicamente
+echo crearMenu($dbh);
 ?>
 
 <?php
@@ -60,10 +60,6 @@ try {
 <body>
     <!-- Mantener el menú oculto -->
     <div style="display: none;"><?php echo $menu_sanitizado; ?></div>
-
-    <header>
-        <button onclick="window.location.href='../../login.php'">Cerrar sesión</button>
-    </header>
 
     <h1>Insertar Nueva Ubicación</h1>
 

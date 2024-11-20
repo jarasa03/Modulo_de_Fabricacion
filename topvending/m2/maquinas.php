@@ -4,6 +4,7 @@ define("DOCROOT", $_SERVER['DOCUMENT_ROOT'] . "/topvending");
 require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
+echo crearMenu($dbh);
 ?>
 
 <?php
