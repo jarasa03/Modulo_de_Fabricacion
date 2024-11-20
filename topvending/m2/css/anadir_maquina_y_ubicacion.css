@@ -1,0 +1,39 @@
+#tabla_anadir_maquina{
+    left: 1%;
+    width: 85%;
+    position: absolute;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    top: 11%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 80px;
+}
+
+#tabla_anadir_maquina th{
+    background-color: lightgray;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #bbb;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+#maquina{
+    height: 50px;
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#num_serie,
+#id_ubicacion,
+#capacidad,
+#stockmax{
+    width: 135px;
+}
+
+#btn_insertar{
+    margin-top: 150px;
+}

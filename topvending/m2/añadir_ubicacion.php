@@ -3,34 +3,49 @@ session_start();
 define("DOCROOT", $_SERVER['DOCUMENT_ROOT'] . "/topvending");
 require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
-$dbh = conectar(); // Establecemos la conexión con la base de datos
+$dbh = conectar();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recibir los datos del formulario
-    $cliente = $_POST['cliente'];
-    $direccion = $_POST['direccion'];
+// Sanitizar y almacenar el menú generado dinámicamente
+$menu_sanitizado = htmlspecialchars(crearMenu($dbh));
+?>
 
-    // Crear la consulta SQL
-    $sql = "INSERT INTO ubicacion (
-                cliente, dir
-            ) VALUES (
-                :cliente, :dir
-            )";
+<?php
+try {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Recibir y sanitizar los datos del formulario
+        $cliente = htmlspecialchars($_POST['cliente']);
+        $calle = htmlspecialchars($_POST['calle']);
+        $numportal = htmlspecialchars($_POST['numportal']);
+        $codigoPostal = htmlspecialchars($_POST['codigo_postal']);
+        $provincia = htmlspecialchars($_POST['provincia']);
 
-    // Preparar y ejecutar la consulta
-    $stmt = $dbh->prepare($sql);
-    $stmt->bindParam(':cliente', $cliente);
-    $stmt->bindParam(':dir', $direccion);
+        // Validar que todos los campos estén completos
+        if (!empty($calle) && !empty($numportal) && !empty($codigoPostal) && !empty($provincia) && !empty($cliente)) {
+            // Formatear la dirección completa
+            $direccion = "$calle;$numportal;$codigoPostal;$provincia";
 
-    // Ejecutar la consulta
-    try {
-        $stmt->execute();
-        echo "<script>console.log('Nueva ubicación insertada correctamente');</script>";
-        header("Location: ./fabricacion.php"); // Redireccionar a otra página después de la inserción
-        exit;
-    } catch (PDOException $e) {
-        echo "Error al insertar la ubicación: " . $e->getMessage();
+            // Crear la consulta SQL
+            $sql = "INSERT INTO ubicacion (cliente, dir) VALUES (:cliente, :dir)";
+
+            // Preparar y ejecutar la consulta
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(':cliente', $cliente);
+            $stmt->bindParam(':dir', $direccion);
+
+            try {
+                $stmt->execute();
+                echo "<script>console.log('Nueva ubicación insertada correctamente');</script>";
+                header("Location: ./fabricacion.php"); // Redireccionar a otra página después de la inserción
+                exit;
+            } catch (PDOException $e) {
+                echo "<p style='color: red;'>Error al insertar la ubicación: " . htmlspecialchars($e->getMessage()) . "</p>";
+            }
+        } else {
+            echo "<p style='color: red;'>Error: Todos los campos deben estar completos.</p>";
+        }
     }
+} catch (Exception $e) {
+    echo "<p style='color: red;'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
 
@@ -38,62 +53,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insertar Ubicación</title>
-    <link rel="stylesheet" href="./css/maquinas.css">
-    <script src="./js/maquinas.js" defer></script>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 50%;
-            margin: 50px auto;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-            vertical-align: middle;
-        }
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        td input {
-            width: 90%;
-            padding: 5px;
-            text-align: center;
-        }
-        #insertar {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #insertar:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <!--<link rel="stylesheet" href="./css/maquinas.css">-->
+    <link rel="stylesheet" href="/topvending/css/hallentrada.css">
 </head>
 <body>
+    <!-- Mantener el menú oculto -->
+    <div style="display: none;"><?php echo $menu_sanitizado; ?></div>
+
     <header>
         <button onclick="window.location.href='../../login.php'">Cerrar sesión</button>
     </header>
+
+    <h1>Insertar Nueva Ubicación</h1>
+
     <form id="formulario_ubicacion" method="POST">
         <table>
-            <tr>
-                <th>Cliente</th>
-                <td><input id="cliente" type="text" name="cliente" required></td>
-            </tr>
-            <tr>
-                <th>Dirección</th>
-                <td><input id="direccion" type="text" name="direccion" required></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Calle</th>
+                    <th>Número de Portal</th>
+                    <th>Código Postal</th>
+                    <th>Provincia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="cliente" type="text" name="cliente" value="<?php echo htmlspecialchars($cliente ?? ''); ?>" required></td>
+                    <td><input id="calle" type="text" name="calle" value="<?php echo htmlspecialchars($calle ?? ''); ?>" required></td>
+                    <td><input id="numportal" type="number" name="numportal" value="<?php echo htmlspecialchars($numportal ?? ''); ?>" required></td>
+                    <td><input id="codigo_postal" type="number" name="codigo_postal" value="<?php echo htmlspecialchars($codigoPostal ?? ''); ?>" required></td>
+                    <td><input id="provincia" type="text" name="provincia" value="<?php echo htmlspecialchars($provincia ?? ''); ?>" required></td>
+                </tr>
+            </tbody>
         </table>
-        <input type="submit" value="Insertar" id="insertar">
+        <div style="text-align: center; margin-top: 20px;">
+            <input type="submit" value="Insertar" id="insertar">
+        </div>
     </form>
 </body>
 </html>
