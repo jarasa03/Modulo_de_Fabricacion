@@ -1,6 +1,6 @@
 <?php
 session_start();
-define("DOCROOT",$_SERVER['DOCUMENT_ROOT']."/topvending");
+define("DOCROOT", $_SERVER['DOCUMENT_ROOT'] . "/topvending");
 require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
@@ -10,10 +10,10 @@ $dbh = conectar();
 // Verifica si la cookie 'filaSeleccionada' está establecida
 if (isset($_COOKIE['filaSeleccionada'])) {
     $valor = htmlspecialchars($_COOKIE['filaSeleccionada']);
-    $valoresArray = explode(',', $valor); // Divide la cadena por las comas
+    $valoresArray = explode(',', $valor);
 } else {
     echo "<script>console.log('No se ha seleccionado ningún campo');</script>";
-    exit;
+    $valoresArray = array('', '', '', '', ''); // Valores por defecto
 }
 ?>
 
@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modelo = $_POST['modelo'];
     $id_maquina = $_POST['id_maquina'];  // Campo oculto con el ID de la máquina
 
+    // Actualizar la cookie con los nuevos valores
+    $cookieValue = $id_maquina . ',' . $numero_serie . ',' . $id_estado . ',' . $id_ubicacion . ',' . $modelo;
+    setcookie("filaSeleccionada", $cookieValue, time() + 7 * 24 * 60 * 60, "/");
+    
     try {
         // Crear la consulta SQL para actualizar los valores
         $sql = "UPDATE maquina SET 

@@ -1,13 +1,19 @@
 <?php
 session_start();
-define("DOCROOT",$_SERVER['DOCUMENT_ROOT']."/topvending");
+define("DOCROOT", $_SERVER['DOCUMENT_ROOT'] . "/topvending");
 require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 echo crearMenu($dbh);
 
 // Obtener el valor de la cookie si existe
-$selected_row = isset($_COOKIE['filaSeleccionada']) ? $_COOKIE['filaSeleccionada'] : '';
+if (isset($_COOKIE['filaSeleccionada'])) {
+    $cookieValue = htmlspecialchars($_COOKIE['filaSeleccionada']);
+    $valoresArray = explode(',', $cookieValue);
+    $selected_row = $valoresArray[0]; // El ID de la máquina es el primer valor
+} else {
+    $selected_row = '';
+}
 
 ?>
 <!DOCTYPE html>
@@ -19,7 +25,7 @@ $selected_row = isset($_COOKIE['filaSeleccionada']) ? $_COOKIE['filaSeleccionada
     <title>Fabricación</title>
     <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
-    <script src=<?php echo DOCROOT . "/js/js_m2.js"?> defer></script>
+    <script src=<?php echo DOCROOT . "/js/js_m2.js" ?> defer></script>
 </head>
 
 <body>

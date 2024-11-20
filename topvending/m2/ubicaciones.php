@@ -1,6 +1,6 @@
 <?php
 session_start();
-define("DOCROOT",$_SERVER['DOCUMENT_ROOT']."/topvending");
+define("DOCROOT", $_SERVER['DOCUMENT_ROOT'] . "/topvending");
 require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
@@ -74,12 +74,14 @@ try {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Actualizar Ubicacion y Cliente</title>
     <link rel="stylesheet" href="./css/maquinas.css">
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
 </head>
+
 <body>
     <h1>Mostrando maquinas en el taller que faltan por asignar </h1>
 
@@ -119,4 +121,5 @@ try {
         <p>No hay máquinas en el taller para actualizar.</p>
     <?php endif; ?>
 </body>
+
 </html>
