@@ -145,7 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_
                             <td><input type="text" name="cliente" required></td>
                             <td>
                                 <input type="hidden" name="numserie" value="<?php echo htmlspecialchars($maquina['numserie']); ?>">
-                                <button type="submit">Confirmar</button>
+                                <button type="submit" id="btn1">Confirmar</button>
                             </td>
                         </form>
                     </tr>
@@ -192,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_
                         </td>
                         <td>
                             <input type="hidden" name="numserie" value="<?php echo htmlspecialchars($maquina['numserie']); ?>">
-                            <button type="submit" name="asignarUbicacion">Asignar</button>
+                            <button type="submit" name="asignarUbicacion" id="btn2">Asignar</button>
                         </td>
                     </form>
                 </tr>
