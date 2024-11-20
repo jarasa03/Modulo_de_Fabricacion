@@ -10,13 +10,6 @@ h1, h2 {
     text-align: center;
     margin: 20px 0;
     color: #333;
-}
-
-h1 {
-    font-size: 2em;
-}
-
-h2 {
     font-size: 2em;
 }
 
@@ -37,13 +30,26 @@ table th, table td {
     word-wrap: break-word;
 }
 
-table th {
-    background-color: #f4f4f4;
-    color: #333;
-}
-
 table tr:nth-child(even) {
     background-color: #f9f9f9;
+}
+
+/* Centrar el contenido del select */
+select {
+    text-align: center;
+    text-align-last: center;
+    width: 100%;
+}
+
+/* Centrar las opciones dentro del select */
+select option {
+    text-align: center;  
+}
+
+/* Centrar el select en la tabla */
+table td select {
+    margin: 0 auto;  
+    display: block; 
 }
 
 /* Inputs y botones */
@@ -76,16 +82,21 @@ input, select {
     cursor: pointer;
     font-size: 1em;
 }
-
-button:hover {
-    background-color: #45a049;
-}
 /* Diseño responsive */
 .container {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
     padding: 20px;
+}
+
+/* Mensajes de error */
+
+.error{
+    text-align: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: red ;
 }
 
 @media screen and (min-width: 768px) {

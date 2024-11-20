@@ -5,9 +5,7 @@ require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 echo crearMenu($dbh);
-?>
 
-<?php
 try {
     // Consultar máquinas con idubicacion = 1
     $sql = "
@@ -72,39 +70,42 @@ try {
     echo "<p>Error: " . $e->getMessage() . "</p>";
 }
 try {
-    // Consultar máquinas con idubicacion = 1
+    // Obtener las máquinas en el taller
+    $sql = "
+        SELECT m.numserie 
+        FROM maquina m 
+        JOIN ubicacion u ON m.idubicacion = u.idubicacion 
+        WHERE u.idubicacion = 1";
+    $stmt = $dbh->query($sql);
+    $maquinas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Obtener ubicaciones existentes (excepto el taller)
-$sqlUbicaciones = "SELECT idubicacion, dir, cliente FROM ubicacion WHERE idubicacion != 1";
-$stmtUbicaciones = $dbh->query($sqlUbicaciones);
-$ubicaciones = $stmtUbicaciones->fetchAll(PDO::FETCH_ASSOC);
+    // Obtener ubicaciones existentes (excepto el taller)
+    $sqlUbicaciones = "SELECT idubicacion, dir FROM ubicacion WHERE idubicacion != 1";
+    $stmtUbicaciones = $dbh->query($sqlUbicaciones);
+    $ubicaciones = $stmtUbicaciones->fetchAll(PDO::FETCH_ASSOC);
 
-// Procesar la solicitud POST para asignar una ubicación existente
-// Procesar la solicitud POST para asignar una ubicación existente
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_POST['numserie'], $_POST['idubicacion'])) {
-    $numserie = $_POST['numserie'];
-    $idubicacion = $_POST['idubicacion'];
+    // Procesar solicitud POST para asignar ubicación
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_POST['numserie'], $_POST['idubicacion'])) {
+        $numserie = $_POST['numserie'];
+        $idubicacion = $_POST['idubicacion'];
 
-    try {
-        $updateSql = "UPDATE maquina SET idubicacion = :idubicacion WHERE numserie = :numserie";
-        $stmt = $dbh->prepare($updateSql);
-        $stmt->bindParam(':idubicacion', $idubicacion);
-        $stmt->bindParam(':numserie', $numserie);
-        $stmt->execute();
+        try {
+            $updateSql = "UPDATE maquina SET idubicacion = :idubicacion WHERE numserie = :numserie";
+            $stmt = $dbh->prepare($updateSql);
+            $stmt->bindParam(':idubicacion', $idubicacion);
+            $stmt->bindParam(':numserie', $numserie);
+            $stmt->execute();
 
-        // Redirigir para actualizar la lista de máquinas
-        header("Location: ubicaciones.php");
-        exit;
-    } catch (Exception $e) {
-        echo "<p style='color: red;'>Error al asignar la ubicación: " . $e->getMessage() . "</p>";
+            // Redirigir para reflejar cambios
+            header("Location: ubicaciones.php");
+            exit;
+        } catch (Exception $e) {
+            echo "<p style='color: red;'>Error al asignar la ubicación: " . $e->getMessage() . "</p>";
+        }
     }
-}
-
-
 } catch (Exception $e) {
     echo "<p>Error: " . $e->getMessage() . "</p>";
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -130,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_
                     <th>Código Postal</th>
                     <th>Provincia</th>
                     <th>Cliente</th>
-                    <th>Accion</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -139,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_
                         <td><?php echo htmlspecialchars($maquina['numserie']); ?></td>
                         <form method="POST" action="ubicaciones.php">
                             <td><input type="text" name="calle" pattern="[A-Za-z\s]+" required></td>
-                            <td><input type="number" name="numportal" min="1" required></td>
+                            <td><input type="number" name="numportal" min="1" max="1000"required></td>
                             <td><input type="number" name="codigo_postal" min="1000" max="60000"required></td>
                             <td><input type="text" name="provincia" pattern="[A-Za-z\s]+" required></td>
                             <td><input type="text" name="cliente" required></td>
@@ -153,54 +154,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['asignarUbicacion'], $_
             </tbody>
         </table>
     <?php else: ?>
-        <p>No hay máquinas en el taller para actualizar.</p>
+        <p class="error">No hay máquinas en el taller para actualizar.</p>
     <?php endif; ?>
 
     <h2 id="h2">Asignar Maquinas en el taller a Ubicaciones Existentes</h>
 
 <?php if ($maquinas && $ubicaciones): ?>
     <table id="tabla2">
-        <thead>
+    <thead>
+        <tr>
+            <th>Número de Serie</th>
+            <th>Nueva Ubicación</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($maquinas as $maquina): ?>
             <tr>
-                <th>Número de Serie</th>
-                <th>Ubicación Actual</th>
-                <th>Nueva Ubicación</th>
-                <th>Cliente</th>
-                <th>Acción</th>
+                <td><?php echo htmlspecialchars($maquina['numserie']); ?></td>
+                <form method="POST" action="ubicaciones.php">
+                    <td>
+                        <select name="idubicacion" required>
+                            <?php foreach ($ubicaciones as $ubicacion): ?>
+                                <option value="<?php echo htmlspecialchars($ubicacion['idubicacion']); ?>">
+                                    <?php echo htmlspecialchars($ubicacion['dir']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="hidden" name="numserie" value="<?php echo htmlspecialchars($maquina['numserie']); ?>">
+                        <button type="submit" name="asignarUbicacion" id="btn2">Asignar</button>
+                    </td>
+                </form>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($maquinas as $maquina): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($maquina['numserie']); ?></td>
-                    <td><?php echo htmlspecialchars($maquina['dir']); ?></td>
-                    <form method="POST" action="ubicaciones.php">
-                        <td>
-                            <select name="idubicacion" required>
-                                <?php foreach ($ubicaciones as $ubicacion): ?>
-                                    <option value="<?php echo htmlspecialchars($ubicacion['idubicacion']); ?>">
-                                        <?php echo htmlspecialchars($ubicacion['dir'] . ' (' . $ubicacion['cliente'] . ')'); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                        <td>
-                            <?php 
-                                $ubicacionActual = array_filter($ubicaciones, fn($u) => $u['idubicacion'] == $maquina['dir']);
-                                echo htmlspecialchars($ubicacionActual[0]['cliente'] ?? "N/A"); 
-                            ?>
-                        </td>
-                        <td>
-                            <input type="hidden" name="numserie" value="<?php echo htmlspecialchars($maquina['numserie']); ?>">
-                            <button type="submit" name="asignarUbicacion" id="btn2">Asignar</button>
-                        </td>
-                    </form>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 <?php else: ?>
-    <p>No hay máquinas en el taller o ubicaciones disponibles para asignar.</p>
+    <p class="error">No hay máquinas en el taller o ubicaciones disponibles para asignar.</p>
 <?php endif; ?>
 
 </body>
