@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Guardo en la variable foto lo que devuelve la consulta
             $foto = $stmt->fetchColumn();
-            
+
             if ($foto === "null") {
                 echo "<img src='../resources/default.jpg'>";
             } else {
@@ -132,17 +132,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input id="num_serie" type="text" name="numero_serie" value="<?php echo $numero_serie; ?>">
                 </td>
                 <td>
-                    <!-- Campo para el ID de estado -->
-                    <input id="id_estado" type="text" name="id_estado" value="<?php echo $id_estado; ?>">
+                    <!-- Campo para el ID de estado usando un select con tres opciones -->
+                    <select id="id_estado" name="id_estado">
+                        <option value="1" <?php echo ($id_estado == "1") ? 'selected' : ''; ?>>1</option>
+                        <option value="2" <?php echo ($id_estado == "2") ? 'selected' : ''; ?>>2</option>
+                        <option value="3" <?php echo ($id_estado == "3") ? 'selected' : ''; ?>>3</option>
+                    </select>
                 </td>
+
                 <td>
-                    <!-- Campo para el ID de ubicación -->
-                    <input id="id_ubi" type="text" name="id_ubicacion" value="<?php echo $id_ubicacion; ?>">
+                    <!-- Campo para el ID de ubicación usando un select con opciones dinámicas -->
+                    <select id="id_ubicacion" name="id_ubicacion" onchange="this.form.submit()">
+                        <?php
+                        // Consulta para obtener las ubicaciones distintas de la base de datos
+                        $ubicaciones_query = "SELECT DISTINCT idubicacion FROM ubicacion";
+                        $stm = $dbh->prepare($ubicaciones_query);
+                        $stm->execute();
+                        $ubicaciones = $stm->fetchAll(PDO::FETCH_COLUMN);  // Obtener las ubicaciones en un array
+
+                        // Recorrer las ubicaciones obtenidas y crear las opciones del select
+                        foreach ($ubicaciones as $ubicacion_option) {
+                            // Comprobar si el valor de la cookie coincide con la ubicación actual
+                            $selected = ($id_ubicacion == $ubicacion_option) ? 'selected' : '';
+                            echo "<option value='" . htmlspecialchars($ubicacion_option) . "' $selected>" . htmlspecialchars($ubicacion_option) . "</option>";
+                        }
+                        ?>
+                    </select>
                 </td>
+
                 <td>
-                    <!-- Campo para el modelo -->
-                    <input id="modelo" type="text" name="modelo" value="<?php echo $modelo; ?>">
+                    <!-- Campo para el modelo usando un select dinámico -->
+                    <select id="modelo" name="modelo" onchange="this.form.submit()">
+                        <?php
+                        // Consulta para obtener los modelos distintos de la base de datos
+                        $modelos_query = "SELECT DISTINCT modelo FROM maquina";
+                        $stm = $dbh->prepare($modelos_query);
+                        $stm->execute();
+                        $modelos = $stm->fetchAll(PDO::FETCH_COLUMN);  // Obtener los modelos en un array
+
+                        // Recorrer los modelos obtenidos y crear las opciones del select
+                        foreach ($modelos as $modelo_option) {
+                            // Comprobar si el valor de la cookie coincide con el modelo actual
+                            $selected = ($modelo == $modelo_option) ? 'selected' : '';
+                            echo "<option value='" . htmlspecialchars($modelo_option) . "' $selected>" . htmlspecialchars($modelo_option) . "</option>";
+                        }
+                        ?>
+                    </select>
                 </td>
+
             </tr>
         </table>
         <input type="submit" value="Aplicar" id="aplicar">
