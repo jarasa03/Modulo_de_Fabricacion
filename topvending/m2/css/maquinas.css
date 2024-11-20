@@ -43,7 +43,15 @@ td {
 #aplicar {
     position: absolute;
     top: 63%;
-    right: 9%;
+    right: 11%;
+    width: 70px;
+}
+
+#botonBorrar{
+    position: absolute;
+    top: 63%;
+    right: 6%;
+    width: 70px;
 }
 
 img {
@@ -57,8 +65,11 @@ input {
     text-align: center;
 }
 
-#botonBorrar{
-    position: absolute;
-    top: 63%;
-    right: 0%;
+input[type="text"]{
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    text-align: center;
 }
