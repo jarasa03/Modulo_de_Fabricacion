@@ -74,7 +74,7 @@ function validar(PDO $conexion, string $user, string $pwd): bool
    
 
     
-    if ($row === false) {
+    if ($row === false || $pwd !== $row["pass"]) {
         RegistrarLog(date("r"),"x","error"," No existe en base de datos");
         echo "Usuario o contraseña incorrecto";
         $result = false;

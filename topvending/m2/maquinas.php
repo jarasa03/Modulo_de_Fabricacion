@@ -7,13 +7,16 @@ $dbh = conectar();
 ?>
 
 <?php
-// Verifica si la cookie 'filaSeleccionada' está establecida
-if (isset($_COOKIE['filaSeleccionada'])) {
-    $valor = htmlspecialchars($_COOKIE['filaSeleccionada']);
-    $valoresArray = explode(',', $valor);
-} else {
-    echo "<script>console.log('No se ha seleccionado ningún campo');</script>";
-    $valoresArray = array('', '', '', '', ''); // Valores por defecto
+// Recuperar las cookies individuales si están definidas
+$id_maquina = isset($_COOKIE['id_maquina']) ? htmlspecialchars($_COOKIE['id_maquina']) : '';
+$numero_serie = isset($_COOKIE['numero_serie']) ? htmlspecialchars($_COOKIE['numero_serie']) : '';
+$id_estado = isset($_COOKIE['id_estado']) ? htmlspecialchars($_COOKIE['id_estado']) : '';
+$id_ubicacion = isset($_COOKIE['id_ubicacion']) ? htmlspecialchars($_COOKIE['id_ubicacion']) : '';
+$modelo = isset($_COOKIE['modelo']) ? htmlspecialchars($_COOKIE['modelo']) : '';
+
+// Si alguna cookie no está definida, se muestra un mensaje en consola
+if (!$id_maquina) {
+    echo "<script>console.log('No se ha seleccionado ninguna máquina');</script>";
 }
 ?>
 
@@ -26,10 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $modelo = $_POST['modelo'];
     $id_maquina = $_POST['id_maquina'];  // Campo oculto con el ID de la máquina
 
-    // Actualizar la cookie con los nuevos valores
-    $cookieValue = $id_maquina . ',' . $numero_serie . ',' . $id_estado . ',' . $id_ubicacion . ',' . $modelo;
-    setcookie("filaSeleccionada", $cookieValue, time() + 7 * 24 * 60 * 60, "/");
-    
+    // Guardar la información en las cookies por separado (expira en 7 días)
+    setcookie('id_maquina', $id_maquina, time() + 7 * 24 * 60 * 60, "/");
+    setcookie('numero_serie', $numero_serie, time() + 7 * 24 * 60 * 60, "/");
+    setcookie('id_estado', $id_estado, time() + 7 * 24 * 60 * 60, "/");
+    setcookie('id_ubicacion', $id_ubicacion, time() + 7 * 24 * 60 * 60, "/");
+    setcookie('modelo', $modelo, time() + 7 * 24 * 60 * 60, "/");
+
     try {
         // Crear la consulta SQL para actualizar los valores
         $sql = "UPDATE maquina SET 
@@ -53,18 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
 
         echo "<script>console.log('Base de datos actualizada correctamente');</script>";
-
-        // Actualizar la cookie con los nuevos valores
-        $cookieValue = $id_maquina . ',' . $numero_serie . ',' . $id_estado . ',' . $id_ubicacion . ',' . $modelo;
-
-        // Establecer la cookie con los nuevos valores (expira en 7 días)
-        setcookie("filaSeleccionada", $cookieValue, time() + 7 * 24 * 60 * 60, "/"); // 7 días
-
-        // Confirmar que la cookie fue actualizada
-        echo "<script>console.log('Cookie actualizada correctamente');</script>";
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
+
     header("Location: ./fabricacion.php");
     exit;
 }
@@ -78,9 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Máquinas</title>
     <link rel="stylesheet" href="./css/maquinas.css">
-    <script src="./js/maquinas.js" defer></script>
 </head>
-<header><button onclick="window.location.href='../../login.php  '">Cerrar sesion</button></header>
+<header><button onclick="window.location.href='../../login.php'">Cerrar sesión</button></header>
 
 <body>
     <div id="imagen_maquina">
@@ -99,20 +96,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </thead>
             <tr>
                 <td>
-                    <?php echo $valoresArray[0]; ?>
-                    <input type="hidden" name="id_maquina" value="<?php echo $valoresArray[0]; ?>"> <!-- ID oculto -->
+                    <!-- Campo oculto para el ID de la máquina -->
+                    <input type="hidden" name="id_maquina" value="<?php echo $id_maquina; ?>">
+                    <?php echo $id_maquina; ?>  <!-- Muestra el ID de la máquina en la celda -->
                 </td>
                 <td>
-                    <input id="num_serie" type="text" name="numero_serie" value="<?php echo $valoresArray[1]; ?>">
+                    <!-- Campo para el número de serie -->
+                    <input id="num_serie" type="text" name="numero_serie" value="<?php echo $numero_serie; ?>">
                 </td>
                 <td>
-                    <input id="id_estado" type="text" name="id_estado" value="<?php echo $valoresArray[2]; ?>">
+                    <!-- Campo para el ID de estado -->
+                    <input id="id_estado" type="text" name="id_estado" value="<?php echo $id_estado; ?>">
                 </td>
                 <td>
-                    <input id="id_ubi" type="text" name="id_ubicacion" value="<?php echo $valoresArray[3]; ?>">
+                    <!-- Campo para el ID de ubicación -->
+                    <input id="id_ubi" type="text" name="id_ubicacion" value="<?php echo $id_ubicacion; ?>">
                 </td>
                 <td>
-                    <input id="modelo" type="text" name="modelo" value="<?php echo $valoresArray[4]; ?>">
+                    <!-- Campo para el modelo -->
+                    <input id="modelo" type="text" name="modelo" value="<?php echo $modelo; ?>">
                 </td>
             </tr>
         </table>

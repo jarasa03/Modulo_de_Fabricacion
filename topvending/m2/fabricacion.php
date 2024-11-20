@@ -6,15 +6,6 @@ require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 echo crearMenu($dbh);
 
-// Obtener el valor de la cookie si existe
-if (isset($_COOKIE['filaSeleccionada'])) {
-    $cookieValue = htmlspecialchars($_COOKIE['filaSeleccionada']);
-    $valoresArray = explode(',', $cookieValue);
-    $selected_row = $valoresArray[0]; // El ID de la máquina es el primer valor
-} else {
-    $selected_row = '';
-}
-
 // Obtener los valores de los filtros
 $modelo = isset($_GET['modelo']) ? $_GET['modelo'] : '';
 $cliente = isset($_GET['cliente']) ? $_GET['cliente'] : '';
@@ -61,7 +52,29 @@ try {
 } catch (PDOException $e) {
     echo '<script>console.log("Error al recoger los datos: ' . $e->getMessage() . '");</script>';
 }
+
+// Guardar cada valor en cookies separadas si se ha enviado el formulario
+if (isset($_POST['seleccionar_fila'])) {
+    // Obtener los datos de los campos ocultos enviados en el formulario
+    $id_maquina = $_POST['id_maquina'];
+    $numero_serie = $_POST['numero_serie'];
+    $id_estado = $_POST['id_estado'];
+    $id_ubicacion = $_POST['id_ubicacion'];
+    $modelo = $_POST['modelo'];
+
+    // Guardar cada dato en su propia cookie (1 hora de duración)
+    setcookie('id_maquina', $id_maquina, time() + 3600, "/");
+    setcookie('numero_serie', $numero_serie, time() + 3600, "/");
+    setcookie('id_estado', $id_estado, time() + 3600, "/");
+    setcookie('id_ubicacion', $id_ubicacion, time() + 3600, "/");
+    setcookie('modelo', $modelo, time() + 3600, "/");
+
+    // Redirigir a la misma página (o a otra página si lo prefieres)
+    header("Location: maquinas.php");
+    exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -71,7 +84,6 @@ try {
     <title>Fabricación</title>
     <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
-    <script src="<?php echo DOCROOT . "/js/js_m2.js" ?>" defer></script>
 </head>
 
 <body>
@@ -105,23 +117,34 @@ try {
                 </thead>
             </table>
         </div>
+    </form>
         <div class="tablas" id="maquinas_fabri">
             <table class='tabla_principal'>
                 <?php
                 foreach ($rows_maquinas as $row) {
-                    $isSelected = ($row['idmaquina'] == $selected_row) ? ' selected' : '';
-                    echo "<tr class='tr_contenido_principal$isSelected'>";
+                    echo "<tr class='tr_contenido_principal'>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idmaquina']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['numserie']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idestado']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['modelo']) . "</td>";
+                    // Formulario para enviar la fila seleccionada
+                    echo "<td>
+                            <form method='POST'>
+                                <input type='hidden' name='id_maquina' value='" . htmlspecialchars($row['idmaquina']) . "'>
+                                <input type='hidden' name='numero_serie' value='" . htmlspecialchars($row['numserie']) . "'>
+                                <input type='hidden' name='id_estado' value='" . htmlspecialchars($row['idestado']) . "'>
+                                <input type='hidden' name='id_ubicacion' value='" . htmlspecialchars($row['idubicacion']) . "'>
+                                <input type='hidden' name='modelo' value='" . htmlspecialchars($row['modelo']) . "'>
+                                <button type='submit' name='seleccionar_fila'>Seleccionar</button>
+                            </form>
+                          </td>";
                     echo "</tr>";
                 }
                 ?>
             </table>
         </div>
-
+        <form method="GET" action="">
         <div id="tit2">
             <table class="tabla_encabezado">
                 <thead>
@@ -168,8 +191,7 @@ try {
             <table class='tabla_principal'>
                 <?php
                 foreach ($rows_ubicaciones as $row) {
-                    $isSelected = ($row['idubicacion'] == $selected_row) ? ' selected' : '';
-                    echo "<tr class='tr_contenido_principal$isSelected'>";
+                    echo "<tr class='tr_contenido_principal'>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['cliente']) . "</td>";
                     echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['dir']) . "</td>";
@@ -180,5 +202,4 @@ try {
         </div>
     </form>
 </body>
-
 </html>
