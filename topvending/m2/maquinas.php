@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <form id="formulario_maquina" method="POST" enctype="multipart/form-data">
-        <table>
+        <table id="tabla_princ">
             <thead>
                 <tr id="encabezados">
                     <th>Id de Máquina</th>

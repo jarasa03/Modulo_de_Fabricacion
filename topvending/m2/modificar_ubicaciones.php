@@ -10,6 +10,12 @@ echo crearMenu($dbh);
 $idubicacion = isset($_COOKIE['idubicacion']) ? htmlspecialchars($_COOKIE['idubicacion']) : '';
 $cliente = isset($_COOKIE['cliente']) ? htmlspecialchars($_COOKIE['cliente']) : '';
 $dir = isset($_COOKIE['dir']) ? htmlspecialchars($_COOKIE['dir']) : '';
+$direccion = explode(";", $dir); // Separo la cadena completa de dirección en un array
+// Asigno cada posición del array a una variable
+$calle = $direccion[0];
+$num_portal = $direccion[1];
+$cod_postal = $direccion[2];
+$provincia = $direccion[3];
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +26,7 @@ $dir = isset($_COOKIE['dir']) ? htmlspecialchars($_COOKIE['dir']) : '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Ubicaciones</title>
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
+    <link rel="stylesheet" href="/topvending/m2/css/maquinas.css">
 </head>
 
 <body>
