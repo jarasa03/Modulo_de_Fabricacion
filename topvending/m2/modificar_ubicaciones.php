@@ -16,6 +16,30 @@ $calle = $direccion[0];
 $num_portal = $direccion[1];
 $cod_postal = $direccion[2];
 $provincia = $direccion[3];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Verificar si el parámetro idubicacion está presente en la URL
+        if (isset($_POST['idubicacion'])) {
+            $idubicacion = $_POST['idubicacion'];
+    
+            // Preparar la consulta para eliminar la ubicación
+            $sql = "DELETE FROM ubicacion WHERE idubicacion = :idubicacion";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Redirigir después de eliminar
+            header("Location: fabricacion.php"); // O la página que desees redirigir
+            exit;
+        } else {
+            // Si no se pasa un idubicacion
+            echo "<p>Error: No se especificó una ubicación válida para eliminar.</p>";
+        }
+    } catch (Exception $e) {
+        echo "<p>Error al eliminar la ubicación: " . $e->getMessage() . "</p>";
+    }
+}    
 ?>
 
 <!DOCTYPE html>
@@ -67,6 +91,7 @@ $provincia = $direccion[3];
             </tr>
         </table>
         <input type="submit" value="Aplicar" id="aplicando">
+        <button type="submit" name="BorrarMaquina" id="botonBorrar">Eliminar</button>
     </form>
 
 </body>

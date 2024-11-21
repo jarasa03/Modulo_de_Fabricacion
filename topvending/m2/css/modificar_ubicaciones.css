@@ -14,3 +14,9 @@
     top: 26%;
     right: 2.5%;
 }
+
+#botonBorrar{
+    position: absolute;
+    top: 26%;
+    right: 10%;
+}
