@@ -8,9 +8,8 @@ echo crearMenu($dbh);
 
 // Recuperar las cookies individuales si están definidas
 $idubicacion = isset($_COOKIE['idubicacion']) ? htmlspecialchars($_COOKIE['idubicacion']) : '';
-$numero_serie = isset($_COOKIE['cliente']) ? htmlspecialchars($_COOKIE['cliente']) : '';
-$id_estado = isset($_COOKIE['dir']) ? htmlspecialchars($_COOKIE['dir']) : '';
-echo "<script>console.log('" . $idubicacion . "')</script>"
+$cliente = isset($_COOKIE['cliente']) ? htmlspecialchars($_COOKIE['cliente']) : '';
+$dir = isset($_COOKIE['dir']) ? htmlspecialchars($_COOKIE['dir']) : '';
 ?>
 
 <!DOCTYPE html>
@@ -46,11 +45,7 @@ echo "<script>console.log('" . $idubicacion . "')</script>"
                     <input id="cliente" type="text" name="cliente" value="<?php echo $cliente; ?>">
                 </td>
                 <td>
-                    <select id="id_estado" name="id_estado">
-                        <option value="1" <?php echo ($id_estado == "1") ? 'selected' : ''; ?>>1</option>
-                        <option value="2" <?php echo ($id_estado == "2") ? 'selected' : ''; ?>>2</option>
-                        <option value="3" <?php echo ($id_estado == "3") ? 'selected' : ''; ?>>3</option>
-                    </select>
+                    <input id="calle" type="text" name="calle" value="<?php echo $calle; ?>">
                 </td>
                 <td>
                     <select id="id_ubicacion" name="id_ubicacion">
