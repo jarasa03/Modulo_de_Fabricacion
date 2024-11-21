@@ -6,10 +6,11 @@ require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
 echo crearMenu($dbh);
 
-// Obtener los valores de los filtros
-$modelo = isset($_GET['modelo']) ? $_GET['modelo'] : '';
-$cliente = isset($_GET['cliente']) ? $_GET['cliente'] : '';
-$ciudad = isset($_GET['ciudad']) ? $_GET['ciudad'] : '';
+// Validar las entradas de los filtros antes de usarlas en las consultas
+$modelo = isset($_GET['modelo']) ? htmlspecialchars($_GET['modelo']) : '';
+$cliente = isset($_GET['cliente']) ? htmlspecialchars($_GET['cliente']) : '';
+$ciudad = isset($_GET['ciudad']) ? htmlspecialchars($_GET['ciudad']) : '';
+
 
 // Consulta SQL para máquinas con filtro
 $ssql1 = "SELECT idmaquina, numserie, idestado, idubicacion, modelo FROM maquina";
@@ -216,14 +217,16 @@ if (isset($_POST['seleccionar_fila2'])) {
                 echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['cliente']) . "</td>";
                 echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['dir']) . "</td>";
                 // Formulario para enviar la fila seleccionada
+
                 echo "<td class='tabla_principal_td'>
-                            <form method='POST'>
-                                <input type='hidden' name='id_maquina' value='" . htmlspecialchars($row['idubicacion']) . "'>
-                                <input type='hidden' name='numero_serie' value='" . htmlspecialchars($row['cliente']) . "'>
-                                <input type='hidden' name='id_estado' value='" . htmlspecialchars($row['dir']) . "'>
-                                <button type='submit' name='seleccionar_fila2'>Seleccionar</button>
-                            </form>
-                          </td>";
+<form method='POST'>
+    <input type='hidden' name='idubicacion' value='" . htmlspecialchars($row['idubicacion']) . "'>
+    <input type='hidden' name='cliente' value='" . htmlspecialchars($row['cliente']) . "'>
+    <input type='hidden' name='dir' value='" . htmlspecialchars($row['dir']) . "'>
+    <button type='submit' name='seleccionar_fila2'>Seleccionar</button>
+</form>
+</td>";
+
                 echo "</tr>";
                 echo "</tr>";
             }
