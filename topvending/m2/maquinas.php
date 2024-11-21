@@ -54,6 +54,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['BorrarMaquina'])) {
+        $id_maquina = $_POST['id_maquina']; // Recupera el ID de la máquina a eliminar
+
+        try {
+            // Eliminar los productos asociados a la máquina
+            $delete_producto_sql = "DELETE FROM maquinaproducto WHERE idmaquina = :id";
+            $stmt = $dbh->prepare($delete_producto_sql);
+            $stmt->bindParam(":id", $id_maquina, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Eliminar la máquina
+            $delete_sql = "DELETE FROM maquina WHERE idmaquina = :id";
+            $stmt = $dbh->prepare($delete_sql);
+            $stmt->bindParam(':id', $id_maquina, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Eliminar las cookies asociadas a la máquina
+            setcookie('id_maquina', '', time() - 3600, "/");
+            setcookie('numero_serie', '', time() - 3600, "/");
+            setcookie('id_estado', '', time() - 3600, "/");
+            setcookie('id_ubicacion', '', time() - 3600, "/");
+            setcookie('modelo', '', time() - 3600, "/");
+
+            echo "<script>console.log('Máquina eliminada correctamente');</script>";
+        } catch (Exception $e) {
+            echo "Error al eliminar la máquina: " . $e->getMessage();
+        }
+
+        header("Location: ./fabricacion.php");
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -153,6 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tr>
         </table>
         <input type="submit" value="Aplicar" id="aplicar">
+        <button type="submit" name="BorrarMaquina" id="botonBorrar">Eliminar</button>
     </form>
 </body>
 
