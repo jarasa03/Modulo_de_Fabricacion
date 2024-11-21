@@ -73,6 +73,22 @@ if (isset($_POST['seleccionar_fila'])) {
     header("Location: maquinas.php");
     exit();
 }
+
+if (isset($_POST['seleccionar_fila2'])) {
+    // Obtener los datos de los campos ocultos enviados en el formulario
+    $idubicacion = $_POST['idubicacion'];
+    $cliente = $_POST['cliente'];
+    $dir = $_POST['dir'];
+
+    // Guardar cada dato en su propia cookie (1 hora de duración)
+    setcookie('idubicacion', $id_maquina, time() + 3600, "/");
+    setcookie('cliente', $numero_serie, time() + 3600, "/");
+    setcookie('dir', $id_estado, time() + 3600, "/");
+
+    // Redirigir a la misma página (o a otra página si lo prefieres)
+    header("Location: modificar_ubicaciones.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -119,18 +135,18 @@ if (isset($_POST['seleccionar_fila'])) {
             </table>
         </div>
     </form>
-        <div class="tablas" id="maquinas_fabri">
-            <table class='tabla_principal'>
-                <?php
-                foreach ($rows_maquinas as $row) {
-                    echo "<tr class='tr_contenido_principal'>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idmaquina']) . "</td>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['numserie']) . "</td>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idestado']) . "</td>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['modelo']) . "</td>";
-                    // Formulario para enviar la fila seleccionada
-                    echo "<td class='tabla_principal_td'>
+    <div class="tablas" id="maquinas_fabri">
+        <table class='tabla_principal'>
+            <?php
+            foreach ($rows_maquinas as $row) {
+                echo "<tr class='tr_contenido_principal'>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idmaquina']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['numserie']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idestado']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['modelo']) . "</td>";
+                // Formulario para enviar la fila seleccionada
+                echo "<td class='tabla_principal_td'>
                             <form method='POST'>
                                 <input type='hidden' name='id_maquina' value='" . htmlspecialchars($row['idmaquina']) . "'>
                                 <input type='hidden' name='numero_serie' value='" . htmlspecialchars($row['numserie']) . "'>
@@ -140,15 +156,16 @@ if (isset($_POST['seleccionar_fila'])) {
                                 <button type='submit' name='seleccionar_fila'>Seleccionar</button>
                             </form>
                           </td>";
-                    echo "</tr>";
-                }
-                ?>
-            </table>
-        </div>
-        <form method="GET" action="">
-        <div id="tit2">
-            <table class="tabla_encabezado">
-                <thead>
+                echo "</tr>";
+            }
+            ?>
+        </table>
+    </div>
+
+    <div id="tit2">
+        <table class="tabla_encabezado">
+            <thead>
+                <form method="GET" action="">
                     <tr>
                         <th class='th_principal'>Id de Ubicación</th>
                         <th class='th_principal'>
@@ -184,23 +201,35 @@ if (isset($_POST['seleccionar_fila'])) {
                                 ?>
                             </select>
                         </th>
+                        <th>Modificar</th>
                     </tr>
-                </thead>
-            </table>
-        </div>
-        <div class="tablas" id="ubis_fabri">
-            <table class='tabla_principal'>
-                <?php
-                foreach ($rows_ubicaciones as $row) {
-                    echo "<tr class='tr_contenido_principal'>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['cliente']) . "</td>";
-                    echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['dir']) . "</td>";
-                    echo "</tr>";
-                }
-                ?>
-            </table>
-        </div>
-    </form>
+                </form>
+            </thead>
+        </table>
+    </div>
+    <div class="tablas" id="ubis_fabri">
+        <table class='tabla_principal'>
+            <?php
+            foreach ($rows_ubicaciones as $row) {
+                echo "<tr class='tr_contenido_principal'>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['idubicacion']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['cliente']) . "</td>";
+                echo "<td class='tabla_principal_td'>" . htmlspecialchars($row['dir']) . "</td>";
+                // Formulario para enviar la fila seleccionada
+                echo "<td class='tabla_principal_td'>
+                            <form method='POST'>
+                                <input type='hidden' name='id_maquina' value='" . htmlspecialchars($row['idubicacion']) . "'>
+                                <input type='hidden' name='numero_serie' value='" . htmlspecialchars($row['cliente']) . "'>
+                                <input type='hidden' name='id_estado' value='" . htmlspecialchars($row['dir']) . "'>
+                                <button type='submit' name='seleccionar_fila2'>Seleccionar</button>
+                            </form>
+                          </td>";
+                echo "</tr>";
+                echo "</tr>";
+            }
+            ?>
+        </table>
+    </div>
 </body>
+
 </html>
