@@ -81,9 +81,9 @@ if (isset($_POST['seleccionar_fila2'])) {
     $dir = $_POST['dir'];
 
     // Guardar cada dato en su propia cookie (1 hora de duración)
-    setcookie('idubicacion', $id_maquina, time() + 3600, "/");
-    setcookie('cliente', $numero_serie, time() + 3600, "/");
-    setcookie('dir', $id_estado, time() + 3600, "/");
+    setcookie('idubicacion', $idubicacion, time() + 3600, "/");
+    setcookie('cliente', $cliente, time() + 3600, "/");
+    setcookie('dir', $dir, time() + 3600, "/");
 
     // Redirigir a la misma página (o a otra página si lo prefieres)
     header("Location: modificar_ubicaciones.php");
