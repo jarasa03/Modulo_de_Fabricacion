@@ -13,10 +13,12 @@
     position: absolute;
     top: 26%;
     right: 2.5%;
+    width: 70px;
 }
 
 #botonBorrar{
     position: absolute;
     top: 26%;
-    right: 10%;
+    right: 7.5%;
+    width: 70px;
 }
