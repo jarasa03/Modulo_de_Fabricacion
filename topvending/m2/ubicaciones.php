@@ -51,26 +51,26 @@ try {
     <meta charset="UTF-8">
     <title>Actualizar Ubicación</title>
     <link rel="stylesheet" href="./css/ubicaciones.css">
-    <link rel="stylesheet" href="/topvending/css/hallentrada.css">
+    <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
 </head>
 <body>
     <h1 id="h1">Asignar Máquinas en el Taller a Ubicaciones Existentes</h1>
 
     <?php if ($maquinas && $ubicaciones): ?>
-        <table id="tabla2">
+        <table id="tablas">
             <thead>
                 <tr>
-                    <th>Número de Serie</th>
-                    <th>Nueva Ubicación</th>
-                    <th>Acción</th>
+                    <th class="th_principal">Número de Serie</th>
+                    <th class="th_principal">Nueva Ubicación</th>
+                    <th class="th_principal">Acción</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($maquinas as $maquina): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($maquina['numserie']); ?></td>
+                        <td class="tabla_principal_td"><?php echo htmlspecialchars($maquina['numserie']); ?></td>
                         <form method="POST" action="ubicaciones.php">
-                            <td>
+                            <td class="tabla_principal_td">
                                 <select name="idubicacion" required>
                                     <?php foreach ($ubicaciones as $ubicacion): ?>
                                         <option value="<?php echo htmlspecialchars($ubicacion['idubicacion']); ?>">
@@ -79,7 +79,7 @@ try {
                                     <?php endforeach; ?>
                                 </select>
                             </td>
-                            <td>
+                            <td class="tabla_principal_td">
                                 <input type="hidden" name="numserie" value="<?php echo htmlspecialchars($maquina['numserie']); ?>">
                                 <button type="submit" name="asignarUbicacion" id="btn1">Asignar</button>
                             </td>
