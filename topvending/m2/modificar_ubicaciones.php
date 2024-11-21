@@ -16,6 +16,41 @@ $calle = $direccion[0];
 $num_portal = $direccion[1];
 $cod_postal = $direccion[2];
 $provincia = $direccion[3];
+
+// Verificar si el formulario ha sido enviado
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Obtener los valores del formulario
+    $idubicacion = $_POST['idubicacion'];
+    $cliente = $_POST['cliente'];
+    $calle = $_POST['calle'];
+    $num_portal = $_POST['num_portal'];
+    $cod_postal = $_POST['cod_postal'];
+    $provincia = $_POST['provincia'];
+
+    // Realizar la actualización en la base de datos
+    try {
+        $stmt = $dbh->prepare("UPDATE ubicacion SET cliente = :cliente, dir = :dir WHERE idubicacion = :idubicacion");
+        
+        // Formar la dirección completa (para guardarla en la base de datos)
+        $dir_completa = $calle . ";" . $num_portal . ";" . $cod_postal . ";" . $provincia;
+        
+        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+        $stmt->bindParam(':dir', $dir_completa, PDO::PARAM_STR);
+        $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+        
+        // Ejecutar la consulta
+        $stmt->execute();
+        
+        // Mostrar mensaje de éxito
+        echo "<script>console.log('Ubicación actualizada correctamente');</script>";
+        
+        header("Location: fabricacion.php");
+        exit;
+    } catch (PDOException $e) {
+        // En caso de error, mostrar el mensaje
+        echo "<script>console.log('Error al actualizar la ubicación: " . $e->getMessage() . "');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +103,6 @@ $provincia = $direccion[3];
         </table>
         <input type="submit" value="Aplicar" id="aplicando">
     </form>
-
 </body>
 
 </html>
