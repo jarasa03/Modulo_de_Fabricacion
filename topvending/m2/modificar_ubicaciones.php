@@ -17,40 +17,29 @@ $num_portal = $direccion[1];
 $cod_postal = $direccion[2];
 $provincia = $direccion[3];
 
-// Verificar si el formulario ha sido enviado
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Obtener los valores del formulario
-    $idubicacion = $_POST['idubicacion'];
-    $cliente = $_POST['cliente'];
-    $calle = $_POST['calle'];
-    $num_portal = $_POST['num_portal'];
-    $cod_postal = $_POST['cod_postal'];
-    $provincia = $_POST['provincia'];
-
-    // Realizar la actualización en la base de datos
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $stmt = $dbh->prepare("UPDATE ubicacion SET cliente = :cliente, dir = :dir WHERE idubicacion = :idubicacion");
-        
-        // Formar la dirección completa (para guardarla en la base de datos)
-        $dir_completa = $calle . ";" . $num_portal . ";" . $cod_postal . ";" . $provincia;
-        
-        $stmt->bindParam(':cliente', $cliente, PDO::PARAM_STR);
-        $stmt->bindParam(':dir', $dir_completa, PDO::PARAM_STR);
-        $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
-        
-        // Ejecutar la consulta
-        $stmt->execute();
-        
-        // Mostrar mensaje de éxito
-        echo "<script>console.log('Ubicación actualizada correctamente');</script>";
-        
-        header("Location: fabricacion.php");
-        exit;
-    } catch (PDOException $e) {
-        // En caso de error, mostrar el mensaje
-        echo "<script>console.log('Error al actualizar la ubicación: " . $e->getMessage() . "');</script>";
+        // Verificar si el parámetro idubicacion está presente en la URL
+        if (isset($_POST['idubicacion'])) {
+            $idubicacion = $_POST['idubicacion'];
+    
+            // Preparar la consulta para eliminar la ubicación
+            $sql = "DELETE FROM ubicacion WHERE idubicacion = :idubicacion";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            // Redirigir después de eliminar
+            header("Location: fabricacion.php"); // O la página que desees redirigir
+            exit;
+        } else {
+            // Si no se pasa un idubicacion
+            echo "<p>Error: No se especificó una ubicación válida para eliminar.</p>";
+        }
+    } catch (Exception $e) {
+        echo "<p>Error al eliminar la ubicación: " . $e->getMessage() . "</p>";
     }
-}
+}    
 ?>
 
 <!DOCTYPE html>
@@ -102,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
         </table>
         <input type="submit" value="Aplicar" id="aplicando">
+        <button type="submit" name="BorrarMaquina" id="botonBorrar">Eliminar</button>
     </form>
 </body>
 
