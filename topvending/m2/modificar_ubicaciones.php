@@ -27,11 +27,12 @@ $provincia = $direccion[3];
     <title>Modificar Ubicaciones</title>
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
     <link rel="stylesheet" href="/topvending/m2/css/maquinas.css">
+    <link rel="stylesheet" href="/topvending/m2/css/modificar_ubicaciones.css">
 </head>
 
 <body>
     <form id="formulario_maquina" method="POST" enctype="multipart/form-data">
-        <table>
+        <table id="tablita">
             <thead>
                 <tr id="encabezados">
                     <th>Id de Ubicación</th>
@@ -65,7 +66,7 @@ $provincia = $direccion[3];
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Aplicar" id="aplicar">
+        <input type="submit" value="Aplicar" id="aplicando">
     </form>
 
 </body>

@@ -1,0 +1,15 @@
+#tablita {
+    position: absolute;
+    width: 95%;
+    top: 10%;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+    border-collapse: collapse;
+}
+
+#aplicando {
+    position: absolute;
+    top: 26%;
+    right: 2.5%;
+}
