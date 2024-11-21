@@ -52,6 +52,7 @@ try {
     <title>Actualizar Ubicación</title>
     <link rel="stylesheet" href="./css/ubicaciones.css">
     <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
+    <link rel="stylesheet" href="/topvending/css/hallentrada.css">
 </head>
 <body>
     <h1 id="h1">Asignar Máquinas en el Taller a Ubicaciones Existentes</h1>
