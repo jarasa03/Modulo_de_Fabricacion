@@ -7,6 +7,15 @@
     right: 1%;
 }
 
+#imagen_maquina img {
+    /* Ajusta el ancho al 100% del div */
+    width: 100%;
+    /* Ajusta la altura al 100% del div */
+    height: 100%;
+    /* Asegura que la imagen cubra todo el div sin deformarse */
+    object-fit: cover;
+}
+
 
 table {
     left: 1%;
@@ -47,7 +56,7 @@ td {
     width: 70px;
 }
 
-#botonBorrar{
+#botonBorrar {
     position: absolute;
     top: 63%;
     right: 6%;
@@ -65,7 +74,7 @@ input {
     text-align: center;
 }
 
-input[type="text"]{
+input[type="text"] {
     width: 100%;
 }
 
