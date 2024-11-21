@@ -48,41 +48,19 @@ $dir = isset($_COOKIE['dir']) ? htmlspecialchars($_COOKIE['dir']) : '';
                     <input id="calle" type="text" name="calle" value="<?php echo $calle; ?>">
                 </td>
                 <td>
-                    <select id="id_ubicacion" name="id_ubicacion">
-                        <?php
-                        $ubicaciones_query = "SELECT DISTINCT idubicacion FROM ubicacion";
-                        $stm = $dbh->prepare($ubicaciones_query);
-                        $stm->execute();
-                        $ubicaciones = $stm->fetchAll(PDO::FETCH_COLUMN);
-
-                        foreach ($ubicaciones as $ubicacion_option) {
-                            $selected = ($id_ubicacion == $ubicacion_option) ? 'selected' : '';
-                            echo "<option value='" . htmlspecialchars($ubicacion_option) . "' $selected>" . htmlspecialchars($ubicacion_option) . "</option>";
-                        }
-                        ?>
-                    </select>
+                    <input id="num_portal" type="text" name="num_portal" value="<?php echo $num_portal; ?>">
                 </td>
                 <td>
-                    <select id="modelo" name="modelo">
-                        <?php
-                        $modelos_query = "SELECT DISTINCT modelo FROM maquina";
-                        $stm = $dbh->prepare($modelos_query);
-                        $stm->execute();
-                        $modelos = $stm->fetchAll(PDO::FETCH_COLUMN);
-
-                        foreach ($modelos as $modelo_option) {
-                            $selected = ($modelo == $modelo_option) ? 'selected' : '';
-                            echo "<option value='" . htmlspecialchars($modelo_option) . "' $selected>" . htmlspecialchars($modelo_option) . "</option>";
-                        }
-                        
-                        ?>
-                    </select>
+                    <input id="cod_postal" type="text" name="cod_postal" value="<?php echo $cod_postal; ?>">
+                </td>
+                <td>
+                    <input id="provincia" type="text" name="provincia" value="<?php echo $provincia; ?>">
                 </td>
             </tr>
         </table>
         <input type="submit" value="Aplicar" id="aplicar">
     </form>
-    
+
 </body>
 
 </html>
