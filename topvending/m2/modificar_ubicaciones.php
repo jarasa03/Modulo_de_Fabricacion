@@ -23,15 +23,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['idubicacion'])) {
             $idubicacion = $_POST['idubicacion'];
     
-            // Preparar la consulta para eliminar la ubicación
-            $sql = "DELETE FROM ubicacion WHERE idubicacion = :idubicacion";
-            $stmt = $dbh->prepare($sql);
-            $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
-            $stmt->execute();
+            if(isset($_POST['BorrarMaquina'])){
+                // Eliminar los registros dependientes de maquinaproducto
+                $sql_maquinaproducto = "DELETE FROM maquinaproducto WHERE idmaquina IN (SELECT idmaquina FROM maquina WHERE idubicacion = :idubicacion)";
+                $stmt_maquinaproducto = $dbh->prepare($sql_maquinaproducto);
+                $stmt_maquinaproducto->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                $stmt_maquinaproducto->execute();
+
+                // Eliminar primero las máquinas asociadas
+                $sql_maquinas = "UPDATE maquina SET idubicacion = 1 WHERE idubicacion = :idubicacion";
+                $stmt_maquinas = $dbh->prepare($sql_maquinas);
+                $stmt_maquinas->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                $stmt_maquinas->execute();
+
+                // Preparar la consulta para eliminar la ubicación
+                $sql = "DELETE FROM ubicacion WHERE idubicacion = :idubicacion";
+                $stmt = $dbh->prepare($sql);
+                $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                $stmt->execute();
     
-            // Redirigir después de eliminar
-            header("Location: fabricacion.php"); // O la página que desees redirigir
-            exit;
+                // Redirigir después de eliminar
+                header("Location: fabricacion.php"); // O la página que desees redirigir
+                exit;
+            }
+            
+            // Verificar si se presionó "Aplicar"
+            if (isset($_POST['Aplicar'])) {
+                // Recuperar datos del formulario enviados por POST
+                $cliente = $_POST['cliente'];
+                $calle = $_POST['calle'];
+                $num_portal = $_POST['num_portal'];
+                $cod_postal = $_POST['cod_postal'];
+                $provincia = $_POST['provincia'];
+
+                // Concatenar los valores para formar el valor de 'dir'
+                $dir = "$calle;$num_portal;$cod_postal;$provincia";
+
+                try {
+                    // Actualizar datos en la base de datos
+                    $sql_update = "UPDATE ubicacion SET cliente = :cliente, dir = :dir WHERE idubicacion = :idubicacion";
+                
+                    $stmt_update = $dbh->prepare($sql_update);
+                    $stmt_update->bindParam(':cliente', $cliente, PDO::PARAM_STR);
+                    $stmt_update->bindParam(':dir', $dir, PDO::PARAM_STR);
+                    $stmt_update->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                    $stmt_update->execute();
+
+                    echo "<p>Ubicación actualizada correctamente.</p>";
+                
+                    // Redirigir después de eliminar
+                    header("Location: fabricacion.php"); // O la página que desees redirigir
+                    exit;
+            
+                } catch (Exception $e) {
+                    echo "<p>Error al actualizar la ubicación: " . $e->getMessage() . "</p>";
+                }
+            }
         } else {
             // Si no se pasa un idubicacion
             echo "<p>Error: No se especificó una ubicación válida para eliminar.</p>";
@@ -90,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Aplicar" id="aplicando">
+        <input type="submit" name="Aplicar" value="Aplicar" id="aplicando">
         <button type="submit" name="BorrarMaquina" id="botonBorrar">Eliminar</button>
     </form>
 </body>

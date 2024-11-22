@@ -71,13 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':id', $id_maquina, PDO::PARAM_INT);
             $stmt->execute();
 
-            // Eliminar las cookies asociadas a la máquina
-            setcookie('id_maquina', '', time() - 3600, "/");
-            setcookie('numero_serie', '', time() - 3600, "/");
-            setcookie('id_estado', '', time() - 3600, "/");
-            setcookie('id_ubicacion', '', time() - 3600, "/");
-            setcookie('modelo', '', time() - 3600, "/");
-
             echo "<script>console.log('Máquina eliminada correctamente');</script>";
         } catch (Exception $e) {
             echo "Error al eliminar la máquina: " . $e->getMessage();
@@ -87,6 +80,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['Aplicar'])) {
+        $id_maquina = $_POST['id_maquina'];
+        $numero_serie = $_POST['numero_serie'];
+        $id_estado = $_POST['id_estado'];
+        $id_ubicacion = $_POST['id_ubicacion'];
+        $modelo = $_POST['modelo'];
+
+        try {
+            // Actualizar datos en la base de datos
+            $sql_update = "UPDATE maquina 
+                           SET numserie = :numserie, idestado = :idestado, idubicacion = :idubicacion, modelo = :modelo 
+                           WHERE idmaquina = :idmaquina";
+
+            $stmt_update = $dbh->prepare($sql_update);
+            $stmt_update->bindParam(':numserie', $numero_serie, PDO::PARAM_STR);
+            $stmt_update->bindParam(':idestado', $id_estado, PDO::PARAM_INT);
+            $stmt_update->bindParam(':idubicacion', $id_ubicacion, PDO::PARAM_INT);
+            $stmt_update->bindParam(':modelo', $modelo, PDO::PARAM_STR);
+            $stmt_update->bindParam(':idmaquina', $id_maquina, PDO::PARAM_INT);
+            $stmt_update->execute();
+
+            echo "<p>Máquina actualizada correctamente.</p>";
+
+            // Redirigir para evitar reenvío del formulario
+            header("Location: fabricacion.php");
+            exit;
+        } catch (Exception $e) {
+            echo "Error al actualizar la máquina: " . $e->getMessage();
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -185,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Aplicar" id="aplicar">
+        <input type="submit" name="Aplicar" value="Aplicar" id="aplicar">
         <button type="submit" name="BorrarMaquina" id="botonBorrar">Eliminar</button>
     </form>
 </body>
