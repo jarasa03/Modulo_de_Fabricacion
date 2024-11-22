@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </td>
                     <td>
-                    <select id="id_ubicacion" name="id_ubicacion" required>
+                        <select id="id_ubicacion" name="id_ubicacion" required>
                             <?php
                             $ubicaciones_query = "SELECT DISTINCT idubicacion FROM ubicacion";
                             $stmt = $dbh->prepare($ubicaciones_query);
