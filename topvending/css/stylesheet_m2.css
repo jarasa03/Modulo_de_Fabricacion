@@ -2,129 +2,187 @@
    TABLAS Y Celdas Generales
    ============================== */
 
+
 /* Contenedor principal para las tablas */
+
 .tablas {
-    background-color: lightgoldenrodyellow;  /* Color de fondo amarillo suave */
-    height: 33%;                             /* La altura del contenedor es un 33% de su contenedor padre */
-    width: 90%;                              /* El contenedor ocupa el 90% del ancho de la pantalla */
-    position: absolute;                      /* Posicionamiento absoluto para colocar el contenedor donde se desee */
-    left: 50%;                               /* Alineación horizontal al 50% desde la izquierda */
-    transform: translateX(-50%);             /* Desplazamiento hacia la izquierda para centrar */
-    overflow: auto;                          /* Permite que aparezca una barra de desplazamiento si el contenido se desborda */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave alrededor del contenedor */
-    scrollbar-width: none;                   /* Oculta la barra de desplazamiento en navegadores compatibles */
+    background-color: lightgoldenrodyellow;
+    height: 33%;
+    width: 90%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    scrollbar-width: none;
 }
 
-/* Deshabilitar la barra de desplazamiento en navegadores Webkit (Chrome, Safari, etc.) */
 .tablas::-webkit-scrollbar {
-    display: none;                           /* Desactiva la barra de desplazamiento */
+    display: none;
 }
+
+
+/* Encabezado de las tablas */
+
+.tabla_encabezado {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+/* Estilo general de las tablas */
+
+.tabla_principal {
+    width: 100%;
+    border-spacing: 0;
+    background-color: white;
+    overflow: hidden;
+    table-layout: fixed;
+}
+
+
+/* Estilos para las celdas de la tabla */
+
+.tabla_principal_td {
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    text-align: center;
+    white-space: nowrap;
+    font-size: large;
+}
+
 
 /* ============================== 
    ESTILOS ESPECÍFICOS (Elementos con ID o Clases específicas)
    ============================== */
 
+
 /* Estilos para las tablas específicas de máquinas en fabricación */
+
 #maquinas_fabri {
-    top: 20%;  /* Coloca la tabla a un 20% desde la parte superior de la pantalla */
+    top: 20%;
 }
+
 
 /* Estilos para las tablas específicas de ubicaciones en fabricación */
+
 #ubis_fabri {
-    top: 64%;  /* Coloca la tabla a un 64% desde la parte superior de la pantalla */
+    top: 64%;
 }
 
-/* ============================== 
-   ESTILOS DE INTERACCIÓN (Hover y Alternancia)
-   ============================== */
 
 /* Títulos de las tablas */
+
 #tit1,
 #tit2 {
-    position: absolute;                      /* Posicionamiento absoluto para colocarlos en un lugar específico */
-    height: 50px;                             /* Altura fija para los títulos */
-    width: 90%;                               /* Ancho del 90% */
-    left: 50%;                                /* Alineación horizontal al 50% */
-    transform: translateX(-50%);              /* Desplazamiento hacia la izquierda para centrar */
+    position: absolute;
+    height: 50px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-/* Posicionamiento específico de los títulos */
 #tit1 {
-    top: 13%;  /* Coloca el primer título en el 13% desde la parte superior */
+    top: 13%;
 }
 
 #tit2 {
-    top: 57%;  /* Coloca el segundo título en el 57% desde la parte superior */
+    top: 57%;
 }
 
-/* Estilo de las celdas de los encabezados de las tablas */
 #tit2 th,
 #tit1 th,
 .th_principal {
-    background-color: lightgray; /* Color de fondo gris claro para los encabezados */
-    height: 50px;                /* Altura de las celdas de los encabezados */
-    padding: 10px;               /* Espaciado interno de las celdas */
-    border: 1px solid #bbb;      /* Borde de color gris claro */
-    text-align: center;          /* Alineación centrada del texto */
-    font-weight: bold;           /* Texto en negrita */
-    color: #333;                 /* Color del texto (gris oscuro) */
-    font-size: large;            /* Tamaño de fuente grande */
+    background-color: lightgray;
+    height: 50px;
+    padding: 10px;
+    border: 1px solid #bbb;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    font-size: large;
 }
 
-/* Estilo para el filtro (si lo hay) */
 .filtros {
-    position: relative;         /* Posicionamiento relativo para ajustar su ubicación */
-    left: 4%;                   /* Desplazamiento hacia la izquierda */
-    height: 25px;               /* Altura del filtro */
-    border-radius: 6px;         /* Bordes redondeados */
+    position: relative;
+    left: 4%;
+    height: 25px;
+    border-radius: 6px;
 }
+
+
+/* Estilos para las celdas que contienen botones */
+
+.tabla_principal_td button {
+    display: flex;
+    /* Centra horizontalmente */
+    justify-content: center;
+    /* Centra verticalmente */
+    align-items: center;
+    margin-top: 15px;
+    height: 100%;
+    width: 100%;
+}
+
 
 /* ============================== 
    ESTILOS DE INTERACCIÓN (Hover y Alternancia)
    ============================== */
 
+
 /* Filas alternas con color de fondo */
+
 tr:nth-child(even) {
-    background-color: #f9f9f9;  /* Color de fondo gris claro para filas pares */
+    background-color: #f9f9f9;
 }
+
 
 /* Efecto hover para las filas de la tabla */
+
 tr:hover {
-    background-color: #f1d359;  /* Color de fondo amarillo suave al pasar el ratón sobre la fila */
+    background-color: #f1d359;
 }
+
 
 /* Estilos para las celdas de la tabla con efecto hover */
+
 .th_principal:hover {
-    cursor: default; /* Cambia el cursor a predeterminado al pasar sobre los encabezados */
+    cursor: default;
 }
 
+
 /* Estilo para la fila seleccionada */
+
 .tr_contenido_principal.seleccionada {
-    background-color: #e6f3ff !important; /* Color azul claro para la fila seleccionada */
+    /* Azul claro */
+    background-color: #e6f3ff !important;
 }
 
 .tr_contenido_principal.seleccionada:hover {
-    background-color: #c2e0ff !important; /* Color azul más oscuro al pasar el ratón sobre la fila seleccionada */
+    /* Un azul un poco más oscuro para el hover */
+    background-color: #c2e0ff !important;
 }
+
 
 /* ============================== 
    MEDIAS QUERIES (Responsividad)
    ============================== */
 
-/* Estilos para pantallas con un ancho máximo de 768px (como tablets o móviles) */
 @media screen and (max-width: 768px) {
     .tablas {
-        width: 95%;       /* El contenedor de las tablas ocupa el 95% del ancho */
-        height: auto;     /* La altura se ajusta automáticamente al contenido */
+        width: 95%;
+        height: auto;
     }
     #tit1,
     #tit2 {
-        width: 95%;       /* Los títulos ocupan el mismo ancho que el contenedor */
+        /* Asegura que los títulos también tengan el mismo ancho que las tablas */
+        width: 95%;
     }
     .tabla_principal {
-        font-size: 14px;  /* Reduce el tamaño de la fuente para pantallas pequeñas */
+        font-size: 14px;
     }
     .tabla_principal_td {
-        padding: 8px 10px;  /* Reduce el padding dentro de las celdas */
+        padding: 8px 10px;
     }
 }
