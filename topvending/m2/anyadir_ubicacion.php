@@ -53,39 +53,40 @@ try {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Insertar Ubicación</title>
-    <!--<link rel="stylesheet" href="./css/maquinas.css">-->
+    <title>Añadir Ubicación</title>
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
+    <link rel="stylesheet" href="/topvending/m2/css/maquinas.css">
+    <link rel="stylesheet" href="/topvending/m2/css/modificar_ubicaciones.css">
+    <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
 </head>
 <body>
     <!-- Mantener el menú oculto -->
     <div style="display: none;"><?php echo $menu_sanitizado; ?></div>
 
-    <h1>Insertar Nueva Ubicación</h1>
 
     <form id="formulario_ubicacion" method="POST">
-        <table>
+        <table id="tablita">
             <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Calle</th>
-                    <th>Número de Portal</th>
-                    <th>Código Postal</th>
-                    <th>Provincia</th>
+                <tr id="encabezados">
+                    <th class="th_principal">Cliente</th>
+                    <th class="th_principal">Calle</th>
+                    <th class="th_principal">Número de Portal</th>
+                    <th class="th_principal">Código Postal</th>
+                    <th class="th_principal">Provincia</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><input id="cliente" type="text" name="cliente" value="<?php echo htmlspecialchars($cliente ?? ''); ?>" required></td>
                     <td><input id="calle" type="text" name="calle" value="<?php echo htmlspecialchars($calle ?? ''); ?>" required></td>
-                    <td><input id="numportal" type="number" name="numportal" value="<?php echo htmlspecialchars($numportal ?? ''); ?>" required></td>
-                    <td><input id="codigo_postal" type="number" name="codigo_postal" value="<?php echo htmlspecialchars($codigoPostal ?? ''); ?>" required></td>
+                    <td><input id="numportal" min="1" max="1000" type="number" name="numportal" value="<?php echo htmlspecialchars($numportal ?? ''); ?>" required></td>
+                    <td><input id="codigo_postal" min="1000" max="60000" type="number" name="codigo_postal" value="<?php echo htmlspecialchars($codigoPostal ?? ''); ?>" required></td>
                     <td><input id="provincia" type="text" name="provincia" value="<?php echo htmlspecialchars($provincia ?? ''); ?>" required></td>
                 </tr>
             </tbody>
         </table>
-        <div style="text-align: center; margin-top: 20px;">
-            <input type="submit" value="Insertar" id="insertar">
+        <div style="text-align: center;">
+            <input type="submit" value="Aplicar" id="aplicando">
         </div>
     </form>
 </body>

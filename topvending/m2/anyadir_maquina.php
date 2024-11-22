@@ -4,70 +4,91 @@ define("DOCROOT", $_SERVER['DOCUMENT_ROOT'] . "/topvending");
 require_once DOCROOT . "/clases/basededatos.php";
 require_once DOCROOT . '/clases/funciones.php';
 $dbh = conectar();
-
-// Sanitización del menú generado dinámicamente
 echo crearMenu($dbh);
-?>
 
-<?php
-try {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Recibir y sanitizar los datos del formulario
-        $numero_serie = htmlspecialchars($_POST['numero_serie']);
-        $id_estado = htmlspecialchars($_POST['id_estado']);
-        $id_ubicacion = htmlspecialchars($_POST['id_ubicacion']);
-        $capacidad = htmlspecialchars($_POST['capacidad']);
-        $stockmax = htmlspecialchars($_POST['stockmax']);
+// Mapeo de modelos a capacidades
+$modelos_capacidad = [
+    'STAR24' => 20,
+    'STAR30' => 30,
+    'STAR42' => 40
+];
+
+// Variables iniciales para el formulario
+$capacidad = '';
+$modelo = '';
+$numero_serie = '';
+$id_estado = '';
+$id_ubicacion = '';
+$stockmax = '';
+$foto = 'null';  // Valor por defecto "null" para la foto
+
+// Procesar formulario al seleccionar un modelo
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verificar si se ha seleccionado un modelo
+    if (isset($_POST['modelo']) && !empty($_POST['modelo'])) {
         $modelo = htmlspecialchars($_POST['modelo']);
+        // Asignar capacidad según el modelo seleccionado
+        $capacidad = $modelos_capacidad[$modelo] ?? '';
+        // Establecer el stockmax igual a la capacidad por defecto
+        $stockmax = $capacidad;
+    }
 
-        // Foto por defecto
-        $foto = "null";
+    // Si el botón "Insertar" es presionado, procesar la inserción
+    if (isset($_POST['accion']) && $_POST['accion'] === 'Aplicar') {
+        // Verificar que capacidad y stockmax no sean vacíos
+        if (empty($capacidad) || empty($stockmax)) {
+            echo "<p style='color: red;'>Por favor, seleccione un modelo para definir la capacidad y el stock máximo.</p>";
+        } else {
+            // Obtener los valores del formulario
+            $numero_serie = htmlspecialchars($_POST['numero_serie']);
+            $id_estado = htmlspecialchars($_POST['id_estado']);
+            $id_ubicacion = htmlspecialchars($_POST['id_ubicacion']);
+            $modelo = htmlspecialchars($_POST['modelo']);
 
-        // Procesar la foto si se ha subido
-        if (!empty($_FILES['foto']['name'])) {
-            $uploads_dir = DOCROOT . '/resources/';
-            if (!is_dir($uploads_dir)) {
-                mkdir($uploads_dir, 0755, true);
+            // Procesar la foto si se ha subido
+            if (!empty($_FILES['foto']['name'])) {
+                $uploads_dir = DOCROOT . '/resources/';
+                if (!is_dir($uploads_dir)) {
+                    mkdir($uploads_dir, 0755, true);
+                }
+
+                $file_name = htmlspecialchars(basename($_FILES['foto']['name']));
+                $file_tmp = $_FILES['foto']['tmp_name'];
+                $file_path = $uploads_dir . $file_name;
+
+                if (move_uploaded_file($file_tmp, $file_path)) {
+                    $foto = $file_name;  // Asignar el nombre del archivo a $foto
+                } else {
+                    echo "<p style='color: red;'>Error al subir la foto.</p>";
+                }
             }
 
-            $file_name = htmlspecialchars(basename($_FILES['foto']['name']));
-            $file_tmp = $_FILES['foto']['tmp_name'];
-            $file_path = $uploads_dir . $file_name;
+            // Realizar la inserción en la base de datos
+            $sql = "INSERT INTO maquina (
+                        numserie, idestado, idubicacion, capacidad, stockmax, modelo, foto
+                    ) VALUES (
+                        :numserie, :idestado, :idubicacion, :capacidad, :stockmax, :modelo, :foto
+                    )";
 
-            if (move_uploaded_file($file_tmp, $file_path)) {
-                $foto = $file_name;
-            } else {
-                echo "<p style='color: red;'>Error al subir la foto.</p>";
+            $stmt = $dbh->prepare($sql);
+            $stmt->bindParam(':numserie', $numero_serie);
+            $stmt->bindParam(':idestado', $id_estado);
+            $stmt->bindParam(':idubicacion', $id_ubicacion);
+            $stmt->bindParam(':capacidad', $capacidad);
+            $stmt->bindParam(':stockmax', $stockmax);
+            $stmt->bindParam(':modelo', $modelo);
+            // Siempre asignamos el valor de foto, que puede ser "null" o el nombre del archivo
+            $stmt->bindValue(':foto', $foto, PDO::PARAM_STR);
+
+            try {
+                $stmt->execute();
+                header("Location: ./fabricacion.php");
+                exit;
+            } catch (PDOException $e) {
+                echo "<p style='color: red;'>Error al insertar la máquina: " . htmlspecialchars($e->getMessage()) . "</p>";
             }
-        }
-
-        // Crear la consulta SQL
-        $sql = "INSERT INTO maquina (
-                    numserie, idestado, idubicacion, capacidad, stockmax, modelo, foto
-                ) VALUES (
-                    :numserie, :idestado, :idubicacion, :capacidad, :stockmax, :modelo, :foto
-                )";
-
-        $stmt = $dbh->prepare($sql);
-        $stmt->bindParam(':numserie', $numero_serie);
-        $stmt->bindParam(':idestado', $id_estado);
-        $stmt->bindParam(':idubicacion', $id_ubicacion);
-        $stmt->bindParam(':capacidad', $capacidad);
-        $stmt->bindParam(':stockmax', $stockmax);
-        $stmt->bindParam(':modelo', $modelo);
-        $stmt->bindParam(':foto', $foto);
-
-        try {
-            $stmt->execute();
-            echo "<script>console.log('Nueva máquina insertada correctamente');</script>";
-            header("Location: ./fabricacion.php");
-            exit;
-        } catch (PDOException $e) {
-            echo "<p style='color: red;'>Error al insertar la máquina: " . htmlspecialchars($e->getMessage()) . "</p>";
         }
     }
-} catch (Exception $e) {
-    echo "<p style='color: red;'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
 
@@ -76,48 +97,45 @@ try {
 
 <head>
     <meta charset="UTF-8">
-    <title>Insertar Máquina</title>
-    <!--<link rel="stylesheet" href="./css/maquinas.css">-->
-    <link rel="stylesheet" href="./css/anadir_maquina_y_ubicacion.css">
+    <title>Añadir Máquina</title>
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
-
+    <link rel="stylesheet" href="/topvending/m2/css/modificar_ubicaciones.css">
+    <link rel="stylesheet" href="/topvending/m2/css/anadir_maquina_y_ubicacion.css">
+    <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
 </head>
 
 <body>
-    <header>
-        <button onclick="window.location.href='../../login.php'">Cerrar sesión</button>
-    </header>
-
-    <h1>Insertar Nueva Máquina</h1>
 
     <form id="formulario_maquina" method="POST" enctype="multipart/form-data">
-        <table id="tabla_anadir_maquina">
+        <table id="tablita">
             <thead>
                 <tr>
-                    <th>Número de Serie</th>
-                    <th>Estado</th>
-                    <th>Ubicación</th>
-                    <th>Capacidad</th>
-                    <th>Stock Máximo</th>
-                    <th>Modelo</th>
-                    <th>Foto</th>
+                    <th class="th_principal">Número de Serie</th>
+                    <th class="th_principal">Estado</th>
+                    <th class="th_principal">Ubicación</th>
+                    <th class="th_principal">Modelo</th>
+                    <th class="th_principal">Foto</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <!-- Sanitizar valores predeterminados (si se usan en futuros ajustes de formulario) -->
-                    <td id="maquina"><input id="num_serie" type="text" name="numero_serie" value="<?php echo htmlspecialchars($numero_serie ?? ''); ?>" placeholder="Campo obligatorio" required></td>
-                    <td id="maquina">
-                        <select id="id_estado" name="id_estado" required>
-                            <option value="1" <?php echo (isset($id_estado) && $id_estado == '1') ? 'selected' : ''; ?>>1</option>
-                            <option value="2" <?php echo (isset($id_estado) && $id_estado == '2') ? 'selected' : ''; ?>>2</option>
-                            <option value="3" <?php echo (isset($id_estado) && $id_estado == '3') ? 'selected' : ''; ?>>3</option>
+                    <td><input type="text" name="numero_serie" value="<?php echo htmlspecialchars($numero_serie); ?>" required></td>
+                    <td>
+                        <select name="id_estado" required>
+                            <?php
+                            $estados_query = "SELECT DISTINCT idestado FROM estado";
+                            $stmt = $dbh->prepare($estados_query);
+                            $stmt->execute();
+                            $estados = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                            foreach ($estados as $estado_option) {
+                                $selected = ($id_estado == $estado_option) ? 'selected' : '';
+                                echo "<option value='" . htmlspecialchars($estado_option) . "' $selected>" . htmlspecialchars($estado_option) . "</option>";
+                            }
+                            ?>
                         </select>
                     </td>
-                    <td id="maquina"><input id="id_ubicacion" type="number" name="id_ubicacion" value="<?php echo htmlspecialchars($id_ubicacion ?? ''); ?>" placeholder="Campo obligatorio" required></td>
-                    <td id="maquina"><input id="capacidad" type="number" name="capacidad" value="<?php echo htmlspecialchars($capacidad ?? ''); ?>" placeholder="Campo obligatorio" required></td>
-                    <td id="maquina"><input id="stockmax" type="number" name="stockmax" value="<?php echo htmlspecialchars($stockmax ?? ''); ?>" placeholder="Campo obligatorio" required></td>
-                    <td id="maquina">
+                    <td><input type="number" name="id_ubicacion" value="<?php echo htmlspecialchars($id_ubicacion); ?>" required></td>
+                    <td>
                         <select id="modelo" name="modelo" required>
                             <?php
                             $modelos_query = "SELECT DISTINCT modelo FROM maquina ORDER BY CAST(SUBSTRING(modelo, 5) AS UNSIGNED)";
@@ -126,17 +144,17 @@ try {
                             $modelos = $stmt->fetchAll(PDO::FETCH_COLUMN);
                             foreach ($modelos as $modelo_option) {
                                 $selected = ($modelo == $modelo_option) ? 'selected' : '';
-                                echo "<option value='". htmlspecialchars($modelo_option) . "' $selected>" . htmlspecialchars($modelo_option) . "</option>";
+                                echo "<option value='" . htmlspecialchars($modelo_option) . "' $selected>" . htmlspecialchars($modelo_option) . "</option>";
                             }
                             ?>
                         </select>
                     </td>
-                    <td id="maquina"><input id="foto" type="file" name="foto"></td>
+                    <td><input type="file" name="foto"></td>
                 </tr>
             </tbody>
         </table>
         <div style="text-align: center;">
-            <button type="submit" id="btn_insertar">Insertar</button>
+            <input type="submit" name="accion" value="Aplicar" id="aplicando">
         </div>
     </form>
 </body>
