@@ -154,6 +154,7 @@ try {
         </table>
     <?php else: ?>
         <p class="error">No hay máquinas en el taller o ubicaciones disponibles para asignar.</p>
+        <!-- Error en caso de que ya no hayan maquinas en el taller -->
     <?php endif; ?>
 </body>
 
