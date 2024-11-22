@@ -150,27 +150,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <td>
                     <!-- Campo de texto para el nombre del cliente -->
-                    <input id="cliente" type="text" name="cliente" value="<?php echo $cliente; ?>">
+                    <input required id="cliente" type="text" name="cliente" value="<?php echo $cliente; ?>">
                 </td>
 
                 <td>
                     <!-- Campo de texto para la calle de la ubicación -->
-                    <input id="calle" type="text" name="calle" value="<?php echo $calle; ?>">
+                    <input required id="calle" type="text" name="calle" value="<?php echo $calle; ?>">
                 </td>
 
                 <td>
                     <!-- Campo de texto para el número de portal de la ubicación -->
-                    <input id="num_portal" type="text" name="num_portal" value="<?php echo $num_portal; ?>">
+                    <input required id="num_portal" type="number" name="num_portal" value="<?php echo $num_portal; ?>">
                 </td>
 
                 <td>
                     <!-- Campo de texto para el código postal de la ubicación -->
-                    <input id="cod_postal" type="text" name="cod_postal" value="<?php echo $cod_postal; ?>">
+                    <input required id="cod_postal" type="number" name="cod_postal" value="<?php echo $cod_postal; ?>">
                 </td>
 
                 <td>
                     <!-- Campo de texto para la provincia de la ubicación -->
-                    <input id="provincia" type="text" name="provincia" value="<?php echo $provincia; ?>">
+                    <input required id="provincia" type="text" name="provincia" value="<?php echo $provincia; ?>">
                 </td>
             </tr>
         </table>
