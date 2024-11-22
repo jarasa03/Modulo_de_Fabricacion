@@ -23,3 +23,7 @@
     right: 7.5%;
     width: 70px;
 }
+
+input {
+    width: 100%;
+}

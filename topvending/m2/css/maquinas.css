@@ -71,6 +71,7 @@ img {
 
 input {
     text-align: center;
+    width: 100%;
 }
 
 input[type="text"] {
