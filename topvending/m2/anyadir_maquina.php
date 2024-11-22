@@ -111,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } catch (PDOException $e) {
                 // Si ocurre un error en la consulta, muestra un mensaje de error
                 echo "<p style='color: red;'>Error al insertar la máquina: " . htmlspecialchars($e->getMessage()) . "</p>";
+                RegistrarLog("Error", "Error en la consulta");
             }
         }
     }

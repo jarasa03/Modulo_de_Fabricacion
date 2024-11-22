@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
                 $stmt->execute();
 
+                RegistrarLog("Data", "Ubicación modificada");
                 // Redirige al usuario a otra página después de eliminar la ubicación.
                 header("Location: fabricacion.php");
                 exit; // Termina la ejecución del script después de la redirección.
@@ -91,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } catch (Exception $e) {
                     // Maneja errores durante la actualización de la base de datos.
                     echo "<p>Error al actualizar la ubicación: " . $e->getMessage() . "</p>";
+                    RegistrarLog("Error", "Error al actualizar la ubicación");
                 }
             }
         } else {
@@ -100,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         // Maneja errores generales durante el procesamiento de la solicitud POST.
         echo "<p>Error al eliminar la ubicación: " . $e->getMessage() . "</p>";
+        RegistrarLog("Error", "Error al eliminar la ubicación");
     }
 }
 ?>

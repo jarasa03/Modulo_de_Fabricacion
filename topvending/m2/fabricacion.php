@@ -68,6 +68,7 @@ try {
 } catch (PDOException $e) {
     // Captura errores de la base de datos y los muestra en la consola del navegador
     echo '<script>console.log("Error al recoger los datos: ' . $e->getMessage() . '");</script>';
+    RegistrarLog("Error", "Error al recoger los datos");
 }
 
 // Si se envía un formulario para seleccionar una fila de la tabla de máquinas

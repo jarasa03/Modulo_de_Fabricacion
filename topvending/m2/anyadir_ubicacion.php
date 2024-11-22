@@ -54,6 +54,7 @@ try {
             } catch (PDOException $e) {
                 // Si ocurre un error al ejecutar la consulta, mostrar el mensaje de error
                 echo "<p style='color: red;'>Error al insertar la ubicación: " . htmlspecialchars($e->getMessage()) . "</p>";
+                RegistrarLog("Error", "Error en la consulta");
             }
         } else {
             // Si algún campo está vacío, mostrar un mensaje de error
@@ -63,6 +64,7 @@ try {
 } catch (Exception $e) {
     // Manejar cualquier otro tipo de excepción que no haya sido capturada antes
     echo "<p style='color: red;'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+    RegistrarLog("Error", "Error en el método POST");
 }
 ?>
 

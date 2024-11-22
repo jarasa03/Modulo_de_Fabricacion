@@ -6,12 +6,12 @@ define("APPROOT","/topvending");
 <!-- Funcion de Login -->
 <?php
 /* Funcion del LOG */
-function RegistrarLog($timestamp, $idusuario, $categoría, String $accion): bool
+function RegistrarLog($categoría, String $accion): bool
 {
     try {
         $logFile = fopen("log.txt", 'a');
         // Escribe una nueva línea en el archivo con los datos proporcionados
-        fwrite($logFile, "\n" . $timestamp . $idusuario . $categoría . $accion);
+        fwrite($logFile, "\n" . date("Y-m-d H:i:s") . $_SESSION['usuario'] . $categoría . $accion);
         fclose($logFile);
 
         // Retorna true si la operación fue exitosa

@@ -66,17 +66,20 @@ try {
             $stmt->execute();
             // Ejecuta la consulta para actualizar la base de datos.
 
+            RegistrarLog("Data", "Máquina actualizada");
             // Redirige a la página 'ubicaciones.php' después de realizar la actualización.
             header("Location: ubicaciones.php");
             exit;
         } catch (Exception $e) {
             // Si ocurre un error al ejecutar la actualización, muestra un mensaje de error.
             echo "<p style='color: red;'>Error al asignar la ubicación: " . $e->getMessage() . "</p>";
+            RegistrarLog("Error", "Error al asignar la ubicación");
         }
     }
 } catch (Exception $e) {
     // Si ocurre un error al obtener las máquinas o ubicaciones, muestra un mensaje de error general.
     echo "<p>Error: " . $e->getMessage() . "</p>";
+    RegistrarLog("Error", "Error en la consulta a la bbdd");
 }
 ?>
 

@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $stmt->bindParam(':foto', $fotoRuta);
                         $stmt->bindParam(':idmaquina', $id_maquina);
                         $stmt->execute();
-
+                        RegistrarLog("Data", "Imagen subida correctamente");
                         echo "<script>console.log('Imagen subida y ruta guardada correctamente para la máquina con ID: $id_maquina.');</script>";
                     } else {
                         echo "Error: No se encontró un ID de máquina válido en las cookies.";
@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } catch (Exception $e) {
                     // Captura y muestra cualquier error ocurrido al actualizar la base de datos.
                     echo "Error al guardar la ruta de la foto: " . $e->getMessage();
+                    RegistrarLog("Error", "Error al guardar la foto");
                 }
             } else {
                 echo "Error al mover el archivo.";
@@ -86,11 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $dbh->prepare($delete_sql);
             $stmt->bindParam(':id', $id_maquina, PDO::PARAM_INT);
             $stmt->execute();
-
+            RegistrarLog("Data", "Máquina eliminada correctamente");
             echo "<script>console.log('Máquina eliminada correctamente');</script>";
         } catch (Exception $e) {
             // Captura y muestra cualquier error ocurrido al eliminar la máquina.
             echo "Error al eliminar la máquina: " . $e->getMessage();
+            RegistrarLog("Error", "Error al eliminar la máquina");
         }
 
         // Redirige al archivo `fabricacion.php` para evitar reenvío del formulario al recargar la página.
@@ -123,7 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_update->bindParam(':idmaquina', $id_maquina, PDO::PARAM_INT);
             $stmt_update->execute();
 
-            echo "<p>Máquina actualizada correctamente.</p>";
+
+            RegistrarLog("Data", "Máquina actualizada correctamente");
 
             // Redirige a `fabricacion.php` para evitar reenvío del formulario.
             header("Location: fabricacion.php");
@@ -131,6 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             // Captura y muestra cualquier error ocurrido al actualizar la máquina.
             echo "Error al actualizar la máquina: " . $e->getMessage();
+            RegistrarLog("Error", "Error al actualizar la máquina");
         }
     }
 }
@@ -175,6 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             // Captura y muestra cualquier error al intentar obtener la imagen.
             echo "Error al mostrar la foto: " . $e->getMessage();
+            RegistrarLog("Error", "Error al mostrar la foto");
         }
         ?>
     </div>
