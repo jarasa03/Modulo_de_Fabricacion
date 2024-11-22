@@ -1,29 +1,33 @@
+/* Estilos para la tabla con el id 'tablita' */
 #tablita {
-    position: absolute;
-    width: 95%;
-    top: 12%;
-    text-align: center;
-    left: 50%;
-    transform: translateX(-50%);
-    border-collapse: collapse;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    table-layout: fixed;
+    position: absolute;         /* Posicionamiento absoluto para que la tabla se ubique en un lugar específico en la página */
+    width: 95%;                 /* La tabla ocupará el 95% del ancho de su contenedor padre */
+    top: 12%;                   /* La tabla se ubica al 12% desde la parte superior de la página */
+    text-align: center;         /* El texto dentro de las celdas de la tabla se alineará al centro */
+    left: 50%;                  /* La tabla se coloca al 50% de la página desde el borde izquierdo */
+    transform: translateX(-50%); /* Centra la tabla de manera horizontal ajustando su posición (50% a la izquierda) */
+    border-collapse: collapse;  /* Elimina los espacios entre los bordes de las celdas para que estén juntos */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra suave a la tabla para darle un efecto de profundidad */
+    table-layout: fixed;        /* Hace que las celdas tengan un tamaño fijo, garantizando una disposición consistente */
 }
 
+/* Estilos para el botón 'Aplicar' */
 #aplicando {
-    position: absolute;
-    top: 28%;
-    right: 2.5%;
-    width: 70px;
+    position: absolute;         /* Posicionamiento absoluto para colocar el botón en un lugar específico */
+    top: 28%;                   /* Coloca el botón al 28% de la altura desde la parte superior de la página */
+    right: 2.5%;                /* Desplaza el botón un 2.5% desde el borde derecho */
+    width: 70px;                /* Establece el ancho del botón a 70px */
 }
 
-#botonBorrar{
-    position: absolute;
-    top: 28%;
-    right: 7.5%;
-    width: 70px;
+/* Estilos para el botón 'Borrar' */
+#botonBorrar {
+    position: absolute;         /* Posicionamiento absoluto para colocar el botón en un lugar específico */
+    top: 28%;                   /* Coloca el botón al 28% de la altura desde la parte superior de la página */
+    right: 7.5%;                /* Desplaza el botón un 7.5% desde el borde derecho */
+    width: 70px;                /* Establece el ancho del botón a 70px */
 }
 
+/* Estilos para los campos de entrada (input) */
 input {
-    width: 100%;
+    width: 100%;                /* Los campos de entrada ocuparán el 100% del ancho disponible dentro de su contenedor */
 }
