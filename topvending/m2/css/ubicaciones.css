@@ -1,136 +1,159 @@
-/* Encabezados */
-h1 {
-    text-align: center;
-    margin: 20px 0;
-    color: #333;
-    font-size: 2em;
+/* ============================== 
+   Encabezados
+   ============================== */
+   h1 {
+    text-align: center;           /* Centra el texto del encabezado */
+    margin: 20px 0;               /* Añade un margen de 20px arriba y abajo del encabezado */
+    color: #333;                  /* Establece el color del texto como un gris oscuro */
+    font-size: 2em;               /* Establece el tamaño de la fuente a 2 veces el tamaño estándar */
 }
 
-/* Tablas */
+/* ============================== 
+   Estilos para las tablas
+   ============================== */
 table {
-    width: 90%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    overflow-x: auto;
+    width: 90%;                   /* La tabla ocupará el 90% del ancho de su contenedor */
+    margin: 20px auto;            /* Añade un margen de 20px arriba y abajo y centra la tabla horizontalmente */
+    border-collapse: collapse;    /* Elimina los espacios entre las celdas de la tabla */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aplica una sombra sutil para dar un efecto de profundidad */
+    background-color: #fff;       /* Establece el color de fondo de la tabla como blanco */
+    overflow-x: auto;             /* Permite el desplazamiento horizontal si el contenido de la tabla es muy ancho */
 }
 
 table th, table td {
-    text-align: center;
-    padding: 10px;  
-    border: 1px solid #ddd;
-    word-wrap: break-word;
+    text-align: center;           /* Centra el texto dentro de las celdas */
+    padding: 10px;                /* Añade un relleno de 10px dentro de las celdas */
+    border: 1px solid #ddd;       /* Añade un borde de 1px de color gris claro alrededor de las celdas */
+    word-wrap: break-word;        /* Permite que las palabras largas se dividan y ajusten al ancho de la celda */
 }
 
-/* Estilo heredado de stylesheet_m2.css de tablas*/
+/* ============================== 
+   Estilos heredados de 'stylesheet_m2.css' para tablas
+   ============================== */
+
+/* Contenedor de las tablas */
 .tablas {
-    background-color: lightgoldenrodyellow;
-    height: 33%;
-    width: 90%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow: auto;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    scrollbar-width: none;
+    background-color: lightgoldenrodyellow; /* Fondo de color amarillo claro para el contenedor */
+    height: 33%;                            /* Establece la altura del contenedor al 33% de la pantalla */
+    width: 90%;                             /* Establece el ancho al 90% */
+    position: absolute;                     /* Posiciona el contenedor de manera absoluta en la página */
+    left: 50%;                              /* Lo coloca al 50% desde la izquierda */
+    transform: translateX(-50%);            /* Centra el contenedor horizontalmente */
+    overflow: auto;                         /* Permite desplazamiento automático si el contenido excede el tamaño */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Aplica una sombra suave alrededor del contenedor */
+    scrollbar-width: none;                  /* Elimina la barra de desplazamiento en navegadores compatibles */
 }
 
 .tablas::-webkit-scrollbar {
-    display: none;
+    display: none;                         /* Oculta la barra de desplazamiento en navegadores basados en WebKit */
 }
 
+/* Estilo de la tabla principal dentro del contenedor */
 .tabla_principal {
-    width: 100%;
-    border-spacing: 0;
-    background-color: white;
-    overflow: hidden;
-    table-layout: fixed;
+    width: 100%;                            /* La tabla ocupará todo el ancho del contenedor */
+    border-spacing: 0;                      /* Elimina los espacios entre las celdas */
+    background-color: white;               /* Fondo blanco para la tabla */
+    overflow: hidden;                       /* Oculta cualquier contenido que sobresalga */
+    table-layout: fixed;                    /* Establece un diseño de tabla fijo, con celdas de tamaño uniforme */
 }
 
+/* Estilo para las celdas de la tabla principal */
 .tabla_principal_td {
-    border: 1px solid #ddd;
-    padding: 12px 15px;
-    text-align: center;
-    white-space: nowrap;
-    font-size: large;
+    border: 1px solid #ddd;                /* Borde gris claro para las celdas */
+    padding: 12px 15px;                     /* Relleno de 12px vertical y 15px horizontal */
+    text-align: center;                     /* Centra el texto dentro de las celdas */
+    white-space: nowrap;                    /* Evita que el texto se divida en varias líneas */
+    font-size: large;                       /* Tamaño de fuente grande */
 }
 
+/* Estilos para las filas alternas de la tabla */
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9;              /* Color de fondo gris muy claro para las filas pares */
 }
 
+/* Estilo de las filas al pasar el ratón (hover) */
 tr:hover {
-    background-color: #f1d359;
+    background-color: #f1d359;              /* Color de fondo amarillo cuando se pasa el ratón sobre una fila */
 }
 
+/* Estilo para las celdas de encabezado */
 .th_principal {
-    background-color: lightgray;
-    height: 50px;
-    padding: 10px;
-    border: 1px solid #bbb;
-    text-align: center;
-    font-weight: bold;
-    color: #333;
-    font-size: large;
+    background-color: lightgray;            /* Fondo gris claro para las celdas de encabezado */
+    height: 50px;                            /* Altura de las celdas de encabezado */
+    padding: 10px;                           /* Relleno de 10px */
+    border: 1px solid #bbb;                 /* Borde gris claro para las celdas de encabezado */
+    text-align: center;                      /* Centra el texto dentro de las celdas de encabezado */
+    font-weight: bold;                       /* Establece la fuente en negrita */
+    color: #333;                             /* Color de texto gris oscuro */
+    font-size: large;                        /* Tamaño de fuente grande */
 }
 
-/* Centrar el contenido del select */
+/* ============================== 
+   Centrado de select
+   ============================== */
+
+/* Estilos para el elemento select */
 select {
-    text-align: center;
-    text-align-last: center;
-    width: 100%;
+    text-align: center;                     /* Centra el texto dentro del select */
+    text-align-last: center;                /* Centra el texto del último elemento dentro del select */
+    width: 100%;                            /* El select ocupará todo el ancho disponible */
 }
 
-/* Centrar las opciones dentro del select */
+/* Estilo para las opciones dentro del select */
 select option {
-    text-align: center;  
+    text-align: center;                     /* Centra las opciones dentro del select */
 }
 
-/* Centrar el select en la tabla */
+/* Centrado del select dentro de las celdas de la tabla */
 table td select {
-    margin: 0 auto;  
-    display: block; 
+    margin: 0 auto;                         /* Centra el select dentro de la celda */
+    display: block;                         /* Hace que el select se comporte como un bloque (para poder centrarlo) */
 }
 
-/* Inputs y botones */
+/* ============================== 
+   Estilos para inputs y botones
+   ============================== */
+
+/* Estilo general para inputs y selects */
 input, select {
-    width: 90%;
-    padding: 8px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    width: 90%;                             /* Los inputs y selects ocuparán el 90% del ancho disponible */
+    padding: 8px;                           /* Añade 8px de relleno dentro de los campos */
+    margin: 5px 0;                          /* Añade un margen de 5px arriba y abajo */
+    border: 1px solid #ccc;                 /* Borde gris claro alrededor de los campos */
+    border-radius: 4px;                     /* Bordes redondeados */
+    box-sizing: border-box;                 /* Asegura que el padding no afecte al tamaño total del campo */
 }
 
-#btn1{
-    background-color: lightskyblue;
-    color: white;
-    padding: 10px 20px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
+/* Estilo para el botón con id 'btn1' */
+#btn1 {
+    background-color: lightskyblue;         /* Color de fondo azul claro para el botón */
+    color: white;                           /* Color del texto blanco */
+    padding: 10px 20px;                     /* Relleno de 10px vertical y 20px horizontal */
+    margin: 10px 0;                         /* Márgenes de 10px arriba y abajo */
+    border: none;                           /* Elimina el borde por defecto del botón */
+    border-radius: 4px;                     /* Bordes redondeados */
+    cursor: pointer;                       /* Cambia el cursor a una mano cuando se pasa por encima */
+    font-size: 1em;                         /* Tamaño de la fuente estándar */
 }
-/* Diseño responsive */
+
+/* ============================== 
+   Diseño responsivo
+   ============================== */
+
+/* Estilos para dispositivos pequeños, usando un grid de una sola columna */
 .container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 20px;
+    display: grid;                          /* Usa un grid para organizar los elementos */
+    grid-template-columns: 1fr;              /* Define una sola columna en el grid */
+    gap: 20px;                              /* Espacio de 20px entre los elementos */
+    padding: 20px;                           /* Añade 20px de relleno al contenedor */
 }
 
-/* Mensajes de error */
-.error{
-    text-align: center;
-    font-weight: bold;
-    font-size: 12px;
-    color: red ;
+/* ============================== 
+   Estilos para los mensajes de error
+   ============================== */
+.error {
+    text-align: center;                     /* Centra el texto del mensaje de error */
+    font-weight: bold;                      /* Establece el texto en negrita */
+    font-size: 12px;                        /* Establece un tamaño de fuente pequeño */
+    color: red;                             /* Establece el color del texto como rojo */
 }
-
-
-
-
-
- 
