@@ -57,7 +57,6 @@ try {
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
     <link rel="stylesheet" href="/topvending/m2/css/maquinas.css">
     <link rel="stylesheet" href="/topvending/m2/css/modificar_ubicaciones.css">
-    <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
 </head>
 <body>
     <!-- Mantener el menú oculto -->
@@ -68,11 +67,11 @@ try {
         <table id="tablita">
             <thead>
                 <tr id="encabezados">
-                    <th class="th_principal">Cliente</th>
-                    <th class="th_principal">Calle</th>
-                    <th class="th_principal">Número de Portal</th>
-                    <th class="th_principal">Código Postal</th>
-                    <th class="th_principal">Provincia</th>
+                    <th>Cliente</th>
+                    <th>Calle</th>
+                    <th>Número de Portal</th>
+                    <th>Código Postal</th>
+                    <th>Provincia</th>
                 </tr>
             </thead>
             <tbody>

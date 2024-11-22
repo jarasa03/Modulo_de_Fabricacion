@@ -99,9 +99,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title>Añadir Máquina</title>
     <link rel="stylesheet" href="/topvending/css/hallentrada.css">
+    <link rel="stylesheet" href="/topvending/m2/css/maquinas.css">
     <link rel="stylesheet" href="/topvending/m2/css/modificar_ubicaciones.css">
-    <link rel="stylesheet" href="/topvending/m2/css/anadir_maquina_y_ubicacion.css">
-    <link rel="stylesheet" href="/topvending/css/stylesheet_m2.css">
 </head>
 
 <body>
@@ -109,19 +108,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form id="formulario_maquina" method="POST" enctype="multipart/form-data">
         <table id="tablita">
             <thead>
-                <tr>
-                    <th class="th_principal">Número de Serie</th>
-                    <th class="th_principal">Estado</th>
-                    <th class="th_principal">Ubicación</th>
-                    <th class="th_principal">Modelo</th>
-                    <th class="th_principal">Foto</th>
+                <tr id="encabezados">
+                    <th>Número de Serie</th>
+                    <th>Estado</th>
+                    <th>Ubicación</th>
+                    <th>Modelo</th>
+                    <th>Foto</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><input type="text" name="numero_serie" value="<?php echo htmlspecialchars($numero_serie); ?>" required></td>
                     <td>
-                        <select name="id_estado" required>
+                        <select id="id_estado" name="id_estado" required>
                             <?php
                             $estados_query = "SELECT DISTINCT idestado FROM estado";
                             $stmt = $dbh->prepare($estados_query);
@@ -134,7 +133,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             ?>
                         </select>
                     </td>
-                    <td><input type="number" name="id_ubicacion" value="<?php echo htmlspecialchars($id_ubicacion); ?>" required></td>
+                    <td>
+                    <select id="id_ubicacion" name="id_ubicacion" required>
+                            <?php
+                            $ubicaciones_query = "SELECT DISTINCT idubicacion FROM ubicacion";
+                            $stmt = $dbh->prepare($ubicaciones_query);
+                            $stmt->execute();
+                            $ubicaciones = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                            foreach ($ubicaciones as $ubicacion_option) {
+                                $selected = ($ubicacion == $ubicacion_option) ? 'selected' : '';
+                                echo "<option value='" . htmlspecialchars($ubicacion_option) . "' $selected>" . htmlspecialchars($ubicacion_option) . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </td>
                     <td>
                         <select id="modelo" name="modelo" required>
                             <?php
