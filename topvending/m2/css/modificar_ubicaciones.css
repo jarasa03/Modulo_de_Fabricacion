@@ -1,7 +1,7 @@
 #tablita {
     position: absolute;
     width: 95%;
-    top: 10%;
+    top: 12%;
     text-align: center;
     left: 50%;
     transform: translateX(-50%);
@@ -12,14 +12,14 @@
 
 #aplicando {
     position: absolute;
-    top: 26%;
+    top: 28%;
     right: 2.5%;
     width: 70px;
 }
 
 #botonBorrar{
     position: absolute;
-    top: 26%;
+    top: 28%;
     right: 7.5%;
     width: 70px;
 }

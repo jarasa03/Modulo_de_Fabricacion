@@ -8,21 +8,33 @@
 
 .top {
     position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    text-align: center;
     padding: 10px;
-    background-color: #f3f3f3; /* Color de fondo */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra  */
+    background-color: #f3f3f3;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    height: 4rem;
+    *> :first-child {
+        margin-left: auto;
+    }
+    .nombre1 {
+        margin-left: auto;
+        margin-right: 0.6rem;
+    }
 }
 
 .center {
-    color:blue;
+    color: blue;
     flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.nombre1{
+
+.nombre1 {
     position: absolute;
     right: 5rem;
     top: 0;
