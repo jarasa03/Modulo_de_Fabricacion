@@ -16,7 +16,6 @@
     object-fit: cover;
 }
 
-
 #tabla_princ {
     left: 1%;
     width: 77%;
@@ -75,6 +74,10 @@ input {
 }
 
 input[type="text"] {
+    width: 100%;
+}
+
+input[type="number"] {
     width: 100%;
 }
 
