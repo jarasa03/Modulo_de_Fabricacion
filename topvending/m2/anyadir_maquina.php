@@ -50,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($capacidad) || empty($stockmax)) {
             // Muestra un mensaje de error si no se ha seleccionado un modelo
             echo "<p style='color: red;'>Por favor, seleccione un modelo para definir la capacidad y el stock máximo.</p>";
+            // Registrar acción en el log
+            RegistrarLog("Error", "No se seleccionó un modelo válido");
         } else {
             // Si todo está correcto, obtenemos los valores del formulario
             $numero_serie = htmlspecialchars($_POST['numero_serie']);
@@ -80,6 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     // Si hay un error al subir la foto, muestra un mensaje de error
                     echo "<p style='color: red;'>Error al subir la foto.</p>";
+                    // Registrar acción en el log
+                    RegistrarLog("Error",  "Error al subir la foto");
                 }
             }
 
@@ -105,13 +109,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 // Intenta ejecutar la consulta
                 $stmt->execute();
+                // Registrar acción en el log
+                RegistrarLog("Data", "Se añadió una nueva máquina $id_maquina con el número de serie:  $numero_serie");
                 // Si la inserción es exitosa, redirige a la página 'fabricacion.php'
                 header("Location: ./fabricacion.php");
                 exit;
             } catch (PDOException $e) {
                 // Si ocurre un error en la consulta, muestra un mensaje de error
                 echo "<p style='color: red;'>Error al insertar la máquina: " . htmlspecialchars($e->getMessage()) . "</p>";
-                RegistrarLog("Error", "Error en la consulta");
+                // Registrar acción en el log
+                RegistrarLog("Error", "Error en la consulta: " . $e->getMessage());
             }
         }
     }

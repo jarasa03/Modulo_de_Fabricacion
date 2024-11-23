@@ -47,6 +47,8 @@ try {
                 $stmt->execute();
                 // Mostrar un mensaje en la consola indicando que la inserción fue exitosa
                 echo "<script>console.log('Nueva ubicación insertada correctamente');</script>";
+                // Registrar acción en el log
+                RegistrarLog("Data", "Nueva ubicación $id_ubicacion insertada correctamente");
                 // Redireccionar al usuario a otra página después de la inserción
                 header("Location: ./fabricacion.php");
                 // Detener la ejecución del script después de la redirección
@@ -54,17 +56,21 @@ try {
             } catch (PDOException $e) {
                 // Si ocurre un error al ejecutar la consulta, mostrar el mensaje de error
                 echo "<p style='color: red;'>Error al insertar la ubicación: " . htmlspecialchars($e->getMessage()) . "</p>";
-                RegistrarLog("Error", "Error en la consulta");
+                // Registrar acción en el log
+                RegistrarLog("Error", "Error " . $e->getMessage() . " en la consulta");
             }
         } else {
             // Si algún campo está vacío, mostrar un mensaje de error
             echo "<p style='color: red;'>Error: Todos los campos deben estar completos.</p>";
+            // Registrar acción en el log
+            RegistrarLog("Error", "No se completaron todos los campos para añadir ubicación");
         }
     }
 } catch (Exception $e) {
     // Manejar cualquier otro tipo de excepción que no haya sido capturada antes
     echo "<p style='color: red;'>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
-    RegistrarLog("Error", "Error en el método POST");
+    // Registrar acción en el log
+    RegistrarLog("Error", "Error " . $e->getMessage() . " en el método POST");
 }
 ?>
 

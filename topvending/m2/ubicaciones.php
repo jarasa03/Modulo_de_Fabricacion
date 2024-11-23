@@ -21,8 +21,7 @@ try {
     // Inicia un bloque try-catch para manejar errores de forma controlada.
 
     // Consulta SQL para obtener las máquinas en el taller (idubicacion = 1)
-    $sql = "
-        SELECT m.numserie 
+    $sql = "SELECT m.numserie 
         FROM maquina m 
         JOIN ubicacion u ON m.idubicacion = u.idubicacion 
         WHERE u.idubicacion = 1";
@@ -66,20 +65,23 @@ try {
             $stmt->execute();
             // Ejecuta la consulta para actualizar la base de datos.
 
-            RegistrarLog("Data", "Máquina actualizada");
+            // Registrar acción en el log
+            RegistrarLog("Data", "Ubicación de la máquina $id_maquina actualizada");
             // Redirige a la página 'ubicaciones.php' después de realizar la actualización.
             header("Location: ubicaciones.php");
             exit;
         } catch (Exception $e) {
             // Si ocurre un error al ejecutar la actualización, muestra un mensaje de error.
             echo "<p style='color: red;'>Error al asignar la ubicación: " . $e->getMessage() . "</p>";
-            RegistrarLog("Error", "Error al asignar la ubicación");
+            // Registrar acción en el log
+            RegistrarLog("Error", "Error " . $e->getMessage() . " al asignar la ubicación");
         }
     }
 } catch (Exception $e) {
     // Si ocurre un error al obtener las máquinas o ubicaciones, muestra un mensaje de error general.
     echo "<p>Error: " . $e->getMessage() . "</p>";
-    RegistrarLog("Error", "Error en la consulta a la bbdd");
+    // Registrar acción en el log
+    RegistrarLog("Error", "Error " . $e->getMessage() . " en la consulta a la bbdd");
 }
 ?>
 
@@ -158,6 +160,7 @@ try {
     <?php else: ?>
         <p class="error">No hay máquinas en el taller o ubicaciones disponibles para asignar.</p>
         <!-- Error en caso de que ya no hayan maquinas en el taller -->
+         <?php RegistrarLog("Error", "No existen máquinas en el taller o ubicaciones disponibles para asignar"); // Registrar acción en el log?>
     <?php endif; ?>
 </body>
 

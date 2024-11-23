@@ -51,21 +51,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $stmt->bindParam(':foto', $fotoRuta);
                         $stmt->bindParam(':idmaquina', $id_maquina);
                         $stmt->execute();
+
+                        // Registrar acción en el log
                         RegistrarLog("Data", "Imagen subida correctamente");
                         echo "<script>console.log('Imagen subida y ruta guardada correctamente para la máquina con ID: $id_maquina.');</script>";
                     } else {
                         echo "Error: No se encontró un ID de máquina válido en las cookies.";
+                        // Registrar acción en el log
+                        RegistrarLog("Error", "No se encontró un ID de máquina válido en las cookies");
                     }
                 } catch (Exception $e) {
                     // Captura y muestra cualquier error ocurrido al actualizar la base de datos.
                     echo "Error al guardar la ruta de la foto: " . $e->getMessage();
-                    RegistrarLog("Error", "Error al guardar la foto");
+                    // Registrar acción en el log
+                    RegistrarLog("Error", "Error " . $e->getMessage() . " al guardar la foto");
                 }
             } else {
                 echo "Error al mover el archivo.";
+                // Registrar acción en el log
+                RegistrarLog("Error",  "Error al mover el archivo");
+
             }
         } else {
             echo "Tipo de archivo no permitido."; // Muestra un mensaje si el tipo de archivo no es válido.
+            // Registrar acción en el log
+            RegistrarLog("Error",  "Tipo de archivo no permitido");
+
         }
     }
 }
@@ -87,14 +98,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $dbh->prepare($delete_sql);
             $stmt->bindParam(':id', $id_maquina, PDO::PARAM_INT);
             $stmt->execute();
-            RegistrarLog("Data", "Máquina eliminada correctamente");
+            // Registrar acción en el log
+            RegistrarLog("Data", "Máquina $id_maquina eliminada correctamente");
             echo "<script>console.log('Máquina eliminada correctamente');</script>";
         } catch (Exception $e) {
             // Captura y muestra cualquier error ocurrido al eliminar la máquina.
             echo "Error al eliminar la máquina: " . $e->getMessage();
-            RegistrarLog("Error", "Error al eliminar la máquina");
+            // Registrar acción en el log
+            RegistrarLog("Error", "Error " . $e->getMessage() . " al eliminar la máquina con ID: $id_maquina");
         }
-
         // Redirige al archivo `fabricacion.php` para evitar reenvío del formulario al recargar la página.
         header("Location: ./fabricacion.php");
         exit;
@@ -126,7 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt_update->execute();
 
 
-            RegistrarLog("Data", "Máquina actualizada correctamente");
+            // Registrar acción en el log
+            RegistrarLog("Data", "Máquina $id_maquina actualizada correctamente");
 
             // Redirige a `fabricacion.php` para evitar reenvío del formulario.
             header("Location: fabricacion.php");
@@ -134,7 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             // Captura y muestra cualquier error ocurrido al actualizar la máquina.
             echo "Error al actualizar la máquina: " . $e->getMessage();
-            RegistrarLog("Error", "Error al actualizar la máquina");
+            // Registrar acción en el log
+            RegistrarLog("Error", "Error " . $e->getMessage() . " al actualizar la máquina con ID: $id_maquina");
         }
     }
 }
@@ -179,7 +193,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             // Captura y muestra cualquier error al intentar obtener la imagen.
             echo "Error al mostrar la foto: " . $e->getMessage();
-            RegistrarLog("Error", "Error al mostrar la foto");
+            // Registrar acción en el log
+            RegistrarLog("Error", "Error " . $e->getMessage()  . " al mostrar la foto");
         }
         ?>
     </div>
