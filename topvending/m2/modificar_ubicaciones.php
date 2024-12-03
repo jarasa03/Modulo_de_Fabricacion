@@ -25,84 +25,125 @@ $dir = isset($_COOKIE['dir']) ? htmlspecialchars($_COOKIE['dir']) : '';
 // Divide la cookie 'dir' en un array utilizando el carácter ';' como separador.
 $direccion = explode(";", $dir);
 
+if (count($direccion) == 4) {
 // Asigna cada posición del array a una variable para trabajar más fácilmente.
 $calle = $direccion[0];
 $num_portal = $direccion[1];
 $cod_postal = $direccion[2];
 $provincia = $direccion[3];
+} else {
+    // Combina los datos de dirección en un único string separado por ';'.
+    $dir = "$calle;$num_portal;$cod_postal;$provincia";
+}
 
-// Comprueba si se ha enviado una solicitud POST (normalmente por un formulario).
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Verifica si se envió un 'idubicacion' en la solicitud POST.
-        if (isset($_POST['idubicacion'])) {
-            $idubicacion = $_POST['idubicacion']; // Asigna el valor a la variable.
+        if (isset($_POST['BorrarUbicacion'])) {
+            $idubicacion = $_POST['idubicacion']; 
 
-            // Comprueba si se presionó el botón 'BorrarMaquina'.
-            if (isset($_POST['BorrarMaquina'])) {
-                // Elimina los registros relacionados en la tabla 'maquinaproducto' que dependen de la ubicación.
-                $sql_maquinaproducto = "DELETE FROM maquinaproducto WHERE idmaquina IN (SELECT idmaquina FROM maquina WHERE idubicacion = :idubicacion)";
-                $stmt_maquinaproducto = $dbh->prepare($sql_maquinaproducto);
-                $stmt_maquinaproducto->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
-                $stmt_maquinaproducto->execute();
+            if (!isset($_POST['confirm'])) {
+                // Mostrar formulario de confirmación
+                echo "<h2 id='confirmar'>¿Está seguro de que desea eliminar la ubicación con ID: $idubicacion?</h2>";
+                echo '<form method="post">
+                        <input type="hidden" name="idubicacion" value="' . $idubicacion . '">
+                        <input type="hidden" name="BorrarUbicacion" value="1">
+                        <button type="submit" name="confirm" value="yes" id="conbtn">Sí, confirmar</button>
+                        <button type="submit" name="confirm" value="no" id="canbtn">No, cancelar</button>
+                      </form>';
+            } else {
+                if ($_POST['confirm'] === 'yes') {
+                    // Procesar la eliminación
+                    $sql_maquinaproducto = "DELETE FROM maquinaproducto 
+                                            WHERE idmaquina IN (SELECT idmaquina FROM maquina WHERE idubicacion = :idubicacion)";
+                    $stmt_maquinaproducto = $dbh->prepare($sql_maquinaproducto);
+                    $stmt_maquinaproducto->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                    $stmt_maquinaproducto->execute();
 
-                // Actualiza las máquinas asociadas a la ubicación eliminada, asignándolas a una ubicación genérica (ID 1).
-                $sql_maquinas = "UPDATE maquina SET idubicacion = 1 WHERE idubicacion = :idubicacion";
-                $stmt_maquinas = $dbh->prepare($sql_maquinas);
-                $stmt_maquinas->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
-                $stmt_maquinas->execute();
+                    $sql_maquinas = "UPDATE maquina SET idubicacion = 1 WHERE idubicacion = :idubicacion";
+                    $stmt_maquinas = $dbh->prepare($sql_maquinas);
+                    $stmt_maquinas->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                    $stmt_maquinas->execute();
 
-                // Elimina la ubicación seleccionada de la base de datos.
-                $sql = "DELETE FROM ubicacion WHERE idubicacion = :idubicacion";
-                $stmt = $dbh->prepare($sql);
-                $stmt->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
-                $stmt->execute();
+                    $sql_delete = "DELETE FROM ubicacion WHERE idubicacion = :idubicacion";
+                    $stmt_delete = $dbh->prepare($sql_delete);
+                    $stmt_delete->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
+                    $stmt_delete->execute();
 
-                // Registrar acción en el log
-                RegistrarLog("Data",  "Ubicación de la máquina $id_maquina actualizada y ubicación $id_ubicacion borrada");
-                // Redirige al usuario a otra página después de eliminar la ubicación.
-                header("Location: fabricacion.php");
-                exit; // Termina la ejecución del script después de la redirección.
+                    // Registrar acción en el log
+                    RegistrarLog("Data", "Ubicación $idubicacion eliminada correctamente");
+
+                    // Realiza la redirección después de la eliminación
+                    header("Location: fabricacion.php");
+                    exit;
+                } else {
+                    // Si se cancela, redirigir sin hacer nada
+                    echo "<script>alert('Acción cancelada');</script>";
+                    header("Location: fabricacion.php");
+                    exit;
+                }
             }
-
-            // Comprueba si se presionó el botón 'Aplicar'.
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['Aplicar'])) {
-                // Recupera los datos enviados por el formulario y los asigna a variables.
-                $cliente = $_POST['cliente'];
-                $calle = $_POST['calle'];
-                $num_portal = $_POST['num_portal'];
-                $cod_postal = $_POST['cod_postal'];
-                $provincia = $_POST['provincia'];
-
-                // Combina los datos de dirección en un único string separado por ';'.
+                // Almacenar los datos en variables de sesión antes de la confirmación
+                $_SESSION['cliente'] = $_POST['cliente'];
+                $_SESSION['calle'] = $_POST['calle'];
+                $_SESSION['num_portal'] = $_POST['num_portal'];
+                $_SESSION['cod_postal'] = $_POST['cod_postal'];
+                $_SESSION['provincia'] = $_POST['provincia'];
+                $_SESSION['idubicacion'] = $_POST['idubicacion'];
+        
+                // Mostrar formulario de confirmación
+                echo "<h2 id='confirmar'>¿Está seguro de que desea modificar la ubicación con ID: {$_POST['idubicacion']}?</h2>";
+                echo '<form method="post">
+                        <input type="hidden" name="confirmAplicar" value="yes">
+                        <button type="submit" id="conbtn">Sí, confirmar</button>
+                        <button type="submit" name="confirmAplicar" value="no" id="canbtn">No, cancelar</button>
+                      </form>';
+            }
+        
+            if (isset($_POST['confirmAplicar']) && $_POST['confirmAplicar'] === 'yes') {
+                // Recuperar los datos desde las variables de sesión
+                $cliente = $_SESSION['cliente'];
+                $calle = $_SESSION['calle'];
+                $num_portal = $_SESSION['num_portal'];
+                $cod_postal = $_SESSION['cod_postal'];
+                $provincia = $_SESSION['provincia'];
+                $idubicacion = $_SESSION['idubicacion'];
+        
+                // Concatenar la dirección
                 $dir = "$calle;$num_portal;$cod_postal;$provincia";
-
+        
                 try {
-                    // Actualiza la información de la ubicación en la base de datos.
+                    // Realizar el update
                     $sql_update = "UPDATE ubicacion SET cliente = :cliente, dir = :dir WHERE idubicacion = :idubicacion";
                     $stmt_update = $dbh->prepare($sql_update);
                     $stmt_update->bindParam(':cliente', $cliente, PDO::PARAM_STR);
                     $stmt_update->bindParam(':dir', $dir, PDO::PARAM_STR);
                     $stmt_update->bindParam(':idubicacion', $idubicacion, PDO::PARAM_INT);
                     $stmt_update->execute();
-
+        
                     // Registrar acción en el log
-                    RegistrarLog("Data",  "Ubicación $id_ubicacion modificada");
-                    // Redirige a otra página
+                    RegistrarLog("Data", "Ubicación $idubicacion modificada");
+        
+                    // Limpiar la sesión
+                    unset($_SESSION['cliente']);
+                    unset($_SESSION['calle']);
+                    unset($_SESSION['num_portal']);
+                    unset($_SESSION['cod_postal']);
+                    unset($_SESSION['provincia']);
+                    unset($_SESSION['idubicacion']);
+        
                     header("Location: fabricacion.php");
-                    exit;
                 } catch (Exception $e) {
-                    // Maneja errores durante la actualización de la base de datos.
                     echo "<p>Error al actualizar la ubicación: " . $e->getMessage() . "</p>";
-                    // Registrar acción en el log
-                    RegistrarLog("Error", "Error " . $e->getMessage() . " al actualizar la ubicación: $id_ubicacion.");
+                    RegistrarLog("Error", "Error " . $e->getMessage() . " al actualizar la ubicación: $idubicacion.");
                 }
             }
         }
     } catch (Exception $e) {
-        // Maneja errores generales durante el procesamiento de la solicitud POST.
-        echo "<p>Error al eliminar la ubicación: " . $e->getMessage() . "</p>";
-        RegistrarLog("Error", "Error ". $e->getMessage() . " al eliminar la ubicación");
+        echo "<p>Error: " . $e->getMessage() . "</p>";
+        RegistrarLog("Error", "Error ". $e->getMessage() . " al procesar la solicitud.");
     }
 }
 ?>
@@ -182,7 +223,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="submit" name="Aplicar" value="Aplicar" id="aplicando">
 
         <!-- Botón para eliminar la ubicación -->
-        <button type="submit" name="BorrarMaquina" id="botonBorrar">Eliminar</button>
+        <button type="submit" name="BorrarUbicacion" id="botonBorrar">Eliminar</button>
     </form>
 </body>
 

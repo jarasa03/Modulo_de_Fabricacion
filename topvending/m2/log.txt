@@ -1,0 +1,63 @@
+
+2024-11-24 20:53:15m2DataMáquina 8 actualizada correctamente
+2024-11-24 20:53:34m2DataUbicación  modificada
+2024-11-28 17:53:14m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 13:47:41m2DataUbicación  modificada
+2024-11-29 13:49:40m2DataUbicación  modificada
+2024-11-29 13:51:04m2ErrorError SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`maquinas_expendedoras`.`maquina`, CONSTRAINT `maquina_ibfk_2` FOREIGN KEY (`idubicacion`) REFERENCES `ubicacion` (`idubicacion`)) al eliminar la ubicación
+2024-11-29 13:51:31m2ErrorError SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`maquinas_expendedoras`.`maquina`, CONSTRAINT `maquina_ibfk_2` FOREIGN KEY (`idubicacion`) REFERENCES `ubicacion` (`idubicacion`)) al eliminar la ubicación
+2024-11-29 13:52:20m2ErrorError SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`maquinas_expendedoras`.`maquina`, CONSTRAINT `maquina_ibfk_2` FOREIGN KEY (`idubicacion`) REFERENCES `ubicacion` (`idubicacion`)) al eliminar la ubicación
+2024-11-29 13:52:29m2ErrorError SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`maquinas_expendedoras`.`maquina`, CONSTRAINT `maquina_ibfk_2` FOREIGN KEY (`idubicacion`) REFERENCES `ubicacion` (`idubicacion`)) al eliminar la ubicación
+2024-11-29 13:52:42m2ErrorError SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`maquinas_expendedoras`.`maquina`, CONSTRAINT `maquina_ibfk_2` FOREIGN KEY (`idubicacion`) REFERENCES `ubicacion` (`idubicacion`)) al eliminar la ubicación
+2024-11-29 13:53:08m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 13:53:28m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 13:53:38m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 13:53:50m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 15:48:02m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 15:49:17m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-29 15:54:06m2DataUbicación  modificada
+2024-11-29 15:54:14m2DataUbicación  modificada
+2024-11-29 15:54:20m2DataUbicación de la máquina  actualizada y ubicación  borrada
+2024-11-30 17:40:06m2DataMáquina 3 actualizada correctamente
+2024-11-30 17:48:38m2DataMáquina 5 actualizada correctamente
+2024-11-30 17:48:44m2DataMáquina 5 actualizada correctamente
+2024-11-30 17:50:18m2DataMáquina 5 eliminada correctamente
+2024-11-30 17:50:29m2DataMáquina 6 actualizada correctamente
+2024-11-30 17:50:36m2DataMáquina 6 eliminada correctamente
+2024-11-30 17:57:43m2DataUbicación  modificada
+2024-11-30 17:57:55m2DataUbicación  modificada
+2024-11-30 18:00:56m2DataUbicación  modificada
+2024-11-30 18:04:28m2DataUbicación 2 eliminada correctamente
+2024-11-30 18:04:44m2DataUbicación 2 eliminada correctamente
+2024-11-30 19:13:51m2DataUbicación 3 modificada
+2024-11-30 19:15:36m2DataUbicación 3 modificada
+2024-11-30 19:17:22m2DataUbicación 3 modificada
+2024-11-30 19:19:24m2DataUbicación 3 eliminada correctamente
+2024-11-30 19:19:35m2DataUbicación 4 modificada
+2024-11-30 19:24:07m2DataUbicación 4 modificada
+2024-11-30 19:24:21m2DataUbicación 4 modificada
+2024-11-30 19:24:36m2DataUbicación 4 modificada
+2024-11-30 19:24:58m2DataUbicación 4 modificada
+2024-11-30 19:31:49m2DataUbicación 4 modificada
+2024-11-30 19:34:04m2DataUbicación 5 modificada
+2024-11-30 19:34:25m2DataUbicación 4 modificada
+2024-11-30 19:35:46m2DataUbicación 11 eliminada correctamente
+2024-11-30 19:38:38m2DataMáquina 4 actualizada correctamente
+2024-11-30 19:38:49m2DataMáquina 4 actualizada correctamente
+2024-11-30 19:39:05m2DataMáquina 4 actualizada correctamente
+2024-11-30 19:40:37m2DataMáquina 1 actualizada correctamente
+2024-11-30 19:40:53m2DataUbicación 1 modificada
+2024-11-30 19:41:03m2DataMáquina 1 eliminada correctamente
+2024-11-30 19:41:13m2DataUbicación 2 eliminada correctamente
+2024-11-30 19:43:31m2DataMáquina 2 actualizada correctamente
+2024-11-30 19:44:16m2DataMáquina 2 eliminada correctamente
+2024-11-30 19:47:17m2DataUbicación 3 eliminada correctamente
+2024-12-01 12:39:00m2DataMáquina 3 actualizada correctamente
+2024-12-01 12:39:17m2DataUbicación 1 modificada
+2024-12-01 12:39:34m2DataMáquina 6 eliminada correctamente
+2024-12-01 12:39:46m2DataUbicación 11 eliminada correctamente
+2024-12-03 15:49:33m2DataMáquina 3 actualizada correctamente
+2024-12-03 15:51:00m2DataMáquina 3 actualizada correctamente
+2024-12-03 15:51:14m2DataUbicación 7 modificada
+2024-12-03 15:52:01m2DataUbicación 7 modificada
+2024-12-03 19:13:32m2DataUbicación 9 modificada

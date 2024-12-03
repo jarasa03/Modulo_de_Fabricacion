@@ -81,35 +81,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Verifica si se ha enviado una solicitud POST para eliminar una máquina.
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['BorrarMaquina'])) {
-        $id_maquina = $_POST['id_maquina']; // Obtiene el ID de la máquina a eliminar.
+// Verifica si se ha enviado una solicitud POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['BorrarMaquina'])) {
+    $id_maquina = htmlspecialchars($_POST['id_maquina']); // Escape básico para mayor seguridad
 
-        try {
-            // Elimina los productos asociados a la máquina de la tabla `maquinaproducto`.
-            $delete_producto_sql = "DELETE FROM maquinaproducto WHERE idmaquina = :id";
-            $stmt = $dbh->prepare($delete_producto_sql);
-            $stmt->bindParam(":id", $id_maquina, PDO::PARAM_INT);
-            $stmt->execute();
+    if (!isset($_POST['confirm'])) {
+        // Mostrar formulario de confirmación
+        echo "<h2 id='confirmar'>¿Está seguro de que desea eliminar la máquina con ID: $id_maquina?</h2>";
+        echo '<form method="post">
+                <input type="hidden" name="id_maquina" value="' . $id_maquina . '">
+                <input type="hidden" name="BorrarMaquina" value="1">
+                <button type="submit" name="confirm" value="yes" id="conbtn">Sí, confirmar</button>
+                <button type="submit" name="confirm" value="no" id="canbtn">No, cancelar</button>
+              </form>';
+    } else {
+        if ($_POST['confirm'] === 'yes') {
+            try {
+                // Elimina los productos asociados a la máquina
+                $delete_producto_sql = "DELETE FROM maquinaproducto WHERE idmaquina = :id";
+                $stmt = $dbh->prepare($delete_producto_sql);
+                $stmt->bindParam(":id", $id_maquina, PDO::PARAM_INT);
+                $stmt->execute();
 
-            // Elimina la máquina de la tabla `maquina`.
-            $delete_sql = "DELETE FROM maquina WHERE idmaquina = :id";
-            $stmt = $dbh->prepare($delete_sql);
-            $stmt->bindParam(':id', $id_maquina, PDO::PARAM_INT);
-            $stmt->execute();
-            // Registrar acción en el log
-            RegistrarLog("Data", "Máquina $id_maquina eliminada correctamente");
-            echo "<script>console.log('Máquina eliminada correctamente');</script>";
-        } catch (Exception $e) {
-            // Captura y muestra cualquier error ocurrido al eliminar la máquina.
-            echo "Error al eliminar la máquina: " . $e->getMessage();
-            // Registrar acción en el log
-            RegistrarLog("Error", "Error " . $e->getMessage() . " al eliminar la máquina con ID: $id_maquina");
+                // Elimina la máquina
+                $delete_sql = "DELETE FROM maquina WHERE idmaquina = :id";
+                $stmt = $dbh->prepare($delete_sql);
+                $stmt->bindParam(':id', $id_maquina, PDO::PARAM_INT);
+                $stmt->execute();
+
+                // Registrar la acción en el log
+                RegistrarLog("Data", "Máquina $id_maquina eliminada correctamente");
+                echo "<script>console.log('Máquina eliminada correctamente');</script>";
+            } catch (Exception $e) {
+                // Manejo de errores
+                echo "Error al eliminar la máquina: " . htmlspecialchars($e->getMessage());
+                RegistrarLog("Error", "Error " . $e->getMessage() . " al eliminar la máquina con ID: $id_maquina");
+            }
+
+            // Redirigir para evitar el reenvío del formulario
+            header("Location: ./fabricacion.php");
+            exit;
+        } else {
+            echo "<script>alert('Acción cancelada');</script>";
+            header("Location: ./fabricacion.php");
+            exit;
         }
-        // Redirige al archivo `fabricacion.php` para evitar reenvío del formulario al recargar la página.
-        header("Location: ./fabricacion.php");
-        exit;
     }
 }
 
@@ -123,32 +139,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_ubicacion = $_POST['id_ubicacion'];
         $modelo = $_POST['modelo'];
 
-        try {
-            // Actualiza los datos de la máquina en la base de datos.
-            $sql_update = "UPDATE maquina 
-                           SET numserie = :numserie, idestado = :idestado, idubicacion = :idubicacion, modelo = :modelo 
-                           WHERE idmaquina = :idmaquina";
+        // Verificar si el formulario de confirmación no ha sido enviado.
+        if (!isset($_POST['confirmAplicar'])) {
+            // Mostrar formulario de confirmación
+            echo "<h2 id='confirmar'>¿Está seguro de que desea modificar la máquina con ID: $id_maquina?</h2>";
+            echo '<form method="post">
+                    <input type="hidden" name="id_maquina" value="' . $id_maquina . '">
+                    <input type="hidden" name="numero_serie" value="' . $numero_serie . '">
+                    <input type="hidden" name="id_estado" value="' . $id_estado . '">
+                    <input type="hidden" name="id_ubicacion" value="' . $id_ubicacion . '">
+                    <input type="hidden" name="modelo" value="' . $modelo . '">
+                    <input type="hidden" name="Aplicar" value="1">
+                    <button type="submit" name="confirmAplicar" value="yes" id="conbtn">Sí, confirmar</button>
+                    <button type="submit" name="confirmAplicar" value="no" id="canbtn">No, cancelar</button>
+                  </form>';
+        } else {
+            // Si se confirma la acción de aplicar los cambios
+            if ($_POST['confirmAplicar'] === 'yes') {
+                try {
+                    // Actualiza los datos de la máquina en la base de datos.
+                    $sql_update = "UPDATE maquina 
+                                   SET numserie = :numserie, idestado = :idestado, idubicacion = :idubicacion, modelo = :modelo 
+                                   WHERE idmaquina = :idmaquina";
 
-            $stmt_update = $dbh->prepare($sql_update);
-            $stmt_update->bindParam(':numserie', $numero_serie, PDO::PARAM_STR);
-            $stmt_update->bindParam(':idestado', $id_estado, PDO::PARAM_INT);
-            $stmt_update->bindParam(':idubicacion', $id_ubicacion, PDO::PARAM_INT);
-            $stmt_update->bindParam(':modelo', $modelo, PDO::PARAM_STR);
-            $stmt_update->bindParam(':idmaquina', $id_maquina, PDO::PARAM_INT);
-            $stmt_update->execute();
+                    $stmt_update = $dbh->prepare($sql_update);
+                    $stmt_update->bindParam(':numserie', $numero_serie, PDO::PARAM_STR);
+                    $stmt_update->bindParam(':idestado', $id_estado, PDO::PARAM_INT);
+                    $stmt_update->bindParam(':idubicacion', $id_ubicacion, PDO::PARAM_INT);
+                    $stmt_update->bindParam(':modelo', $modelo, PDO::PARAM_STR);
+                    $stmt_update->bindParam(':idmaquina', $id_maquina, PDO::PARAM_INT);
+                    $stmt_update->execute();
 
+                    // Registrar acción en el log
+                    RegistrarLog("Data", "Máquina $id_maquina actualizada correctamente");
 
-            // Registrar acción en el log
-            RegistrarLog("Data", "Máquina $id_maquina actualizada correctamente");
-
-            // Redirige a `fabricacion.php` para evitar reenvío del formulario.
-            header("Location: fabricacion.php");
-            exit;
-        } catch (Exception $e) {
-            // Captura y muestra cualquier error ocurrido al actualizar la máquina.
-            echo "Error al actualizar la máquina: " . $e->getMessage();
-            // Registrar acción en el log
-            RegistrarLog("Error", "Error " . $e->getMessage() . " al actualizar la máquina con ID: $id_maquina");
+                    header("Location: fabricacion.php");
+                } catch (Exception $e) {
+                    // Captura y muestra cualquier error ocurrido al actualizar la máquina.
+                    echo "Error al actualizar la máquina: " . $e->getMessage();
+                    // Registrar acción en el log
+                    RegistrarLog("Error", "Error " . $e->getMessage() . " al actualizar la máquina con ID: $id_maquina");
+                }
+            } else {
+                // Si se cancela, redirigir sin hacer nada
+                echo "<script>alert('Acción cancelada');</script>";
+            }
         }
     }
 }
